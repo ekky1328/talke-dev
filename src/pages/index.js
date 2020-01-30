@@ -11,7 +11,6 @@ export default () => (
           <br />
           Chris Talke.
         </h1>
-        {/* <img src="pic.png" alt="My Profile Picure" /> */}
         <h6>Welcome to my little spot on the internet.</h6>
         <div className="blurb">
           <p>
@@ -30,19 +29,28 @@ export default () => (
             <li>
               <div>01.</div>
               <div>
-                <u>About Me</u>
+                <u>About Me</u>.
               </div>
             </li>
             <li>
               <div>02.</div>
               <div>
-                <u>Blog and technical stuff.</u> <br /> Recent: <u>Blog # 3</u>.
+                <u>Personal Projects</u>.
+                <br /> Recent: <u>Project # 1</u>, <u>Project # 2</u> and{" "}
+                <u>Project # 3</u>.
+              </div>
+            </li>
+            <li>
+              <div>03.</div>
+              <div>
+                <u>Blog and technical stuff</u>.
+                <br /> Recent: <u>Blog # 3</u>.
                 <br /> Popular: <u>Blog # 1</u>, <u>Blog # 2</u> and{" "}
                 <u>Blog # 3</u>.
               </div>
             </li>
             <li>
-              <div>03.</div>
+              <div>04.</div>
               <div>
                 <u>Get in touch</u> or check out my other stuff: <u>Github</u>,{" "}
                 <u>Twitter</u> and <u>LinkedIn</u>.

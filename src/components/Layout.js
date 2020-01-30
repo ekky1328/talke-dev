@@ -35,6 +35,14 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  div.top-bar {
+    position: absolute;
+    top: 0;
+    background-color: var(--main-colour);
+    height: 10px;
+    width: 100vw;
+  }
+
   h1 {
     font-family: 'Libre Franklin', sans-serif;
     font-style: normal;
