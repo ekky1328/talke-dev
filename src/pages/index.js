@@ -1,67 +1,110 @@
 import React from "react"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
 
-export default () => (
-  <Layout>
-    <Index>
-      <div className="home-page">
-        <h1>
-          G'day, I'm
-          <br />
-          Chris Talke.
-        </h1>
-        <h6>Welcome to my little spot on the internet.</h6>
-        <div className="blurb">
-          <p>
-            I’m a Fullstack Web Developer & IT Professional based in New South
-            Wales, Australia.
-          </p>
-          <p>
-            I design and develop websites and applications. I solve technical
-            problems for small to medium sized businesses.
-          </p>
-          <p>This is my place to write about... tech? stuff? </p>
+export default () => {
+  const {
+    wp: {
+      page: {
+        homePage: {
+          title,
+          subtitle,
+          blurb,
+          email,
+          emailsubject,
+          twitter,
+          linkedin,
+          github,
+        },
+      },
+    },
+  } = useStaticQuery(graphql`
+    query MyQuery {
+      wp {
+        page(id: "cGFnZToy") {
+          homePage {
+            subtitle
+            title
+            blurb
+            email
+            emailsubject
+            twitter
+            linkedin
+            github
+          }
+        }
+      }
+    }
+  `)
+
+  return (
+    <Layout>
+      <Index>
+        <div className="home-page">
+          <h1>{title}</h1>
+          <h6>{subtitle}</h6>
+          <div
+            className="blurb"
+            dangerouslySetInnerHTML={{ __html: blurb }}
+          ></div>
+          <hr className="split" />
+          <div className="mini-menu">
+            <ul>
+              <li>
+                <div>01.</div>
+                <div>
+                  <Link to="/about-me">About Me</Link>.
+                </div>
+              </li>
+              <li>
+                <div>02.</div>
+                <div>
+                  <Link to="/projects">Personal Projects</Link>.
+                  <br /> Recent: <u>Project # 1</u>, <u>Project # 2</u> and{" "}
+                  <u>Project # 3</u>.
+                </div>
+              </li>
+              <li>
+                <div>03.</div>
+                <div>
+                  <Link to="/blog">Blog and Technical Stuff</Link>.
+                  <br /> Recent: <u>Blog # 3</u>.
+                  <br /> Popular: <u>Blog # 1</u>, <u>Blog # 2</u> and{" "}
+                  <u>Blog # 3</u>.
+                </div>
+              </li>
+              <li>
+                <div>04.</div>
+                <div>
+                  <a
+                    href={`mailto:${email}?Subject=${emailsubject}`}
+                    target="_top"
+                  >
+                    Get in touch
+                  </a>{" "}
+                  or check out my other socials:{" "}
+                  <a href={github} target="_blank" rel="noopener noreferrer">
+                    Github
+                  </a>
+                  ,{" "}
+                  <a href={twitter} target="_blank" rel="noopener noreferrer">
+                    Twitter
+                  </a>{" "}
+                  and{" "}
+                  <a href={linkedin} target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                  </a>
+                  .
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <hr className="split" />
-        <div className="mini-menu">
-          <ul>
-            <li>
-              <div>01.</div>
-              <div>
-                <u>About Me</u>.
-              </div>
-            </li>
-            <li>
-              <div>02.</div>
-              <div>
-                <u>Personal Projects</u>.
-                <br /> Recent: <u>Project # 1</u>, <u>Project # 2</u> and{" "}
-                <u>Project # 3</u>.
-              </div>
-            </li>
-            <li>
-              <div>03.</div>
-              <div>
-                <u>Blog and technical stuff</u>.
-                <br /> Recent: <u>Blog # 3</u>.
-                <br /> Popular: <u>Blog # 1</u>, <u>Blog # 2</u> and{" "}
-                <u>Blog # 3</u>.
-              </div>
-            </li>
-            <li>
-              <div>04.</div>
-              <div>
-                <u>Get in touch</u> or check out my other stuff: <u>Github</u>,{" "}
-                <u>Twitter</u> and <u>LinkedIn</u>.
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </Index>
-  </Layout>
-)
+      </Index>
+    </Layout>
+  )
+}
 
 const Index = styled.div`
   display: flex;

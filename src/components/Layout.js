@@ -43,6 +43,15 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
   }
 
+  a {
+    color: var(--secondary-colour);
+    transition: color 100ms;
+
+    &:hover {
+      color: var(--main-colour)
+    }
+  }
+
   h1 {
     font-family: 'Libre Franklin', sans-serif;
     font-style: normal;
