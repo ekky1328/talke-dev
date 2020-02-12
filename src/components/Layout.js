@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
     top: 0;
     background-color: var(--main-colour);
     height: 10px;
-    width: 100vw;
+    width: 100%;
   }
 
   a {
