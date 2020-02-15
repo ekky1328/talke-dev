@@ -13,4 +13,6 @@ export default () => {
   )
 }
 
-const Index = styled.div``
+const Index = styled.div`
+  width: 450px;
+`

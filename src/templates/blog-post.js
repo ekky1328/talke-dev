@@ -11,6 +11,10 @@ export default ({ pageContext }) => {
   return (
     <Layout>
       <StyledBlogPost>
+        <div className="blog-menu">
+          <Link to="/blog">Blog Posts</Link>
+          <Link to="/">Home</Link>
+        </div>
         <h1>{post.title}</h1>
         <h6 dangerouslySetInnerHTML={{ __html: post.excerpt }}></h6>
         <p id="blog_meta_header">
@@ -46,7 +50,19 @@ export default ({ pageContext }) => {
 
 const StyledBlogPost = styled.div`
   max-width: 650px;
-  margin: 50px auto;
+  margin: 0 auto 50px auto;
+
+  @media only screen and (max-width: 600px) {
+    & {
+      max-width: 375px;
+    }
+  }
+
+  & .blog-menu {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0 25px 0;
+  }
 
   & h1 {
     margin-left: -7px;

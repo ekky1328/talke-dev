@@ -61,17 +61,12 @@ export default () => {
                 <div>02.</div>
                 <div>
                   <Link to="/projects">Personal Projects</Link>.
-                  <br /> Recent: <u>Project # 1</u>, <u>Project # 2</u> and{" "}
-                  <u>Project # 3</u>.
                 </div>
               </li>
               <li>
                 <div>03.</div>
                 <div>
                   <Link to="/blog">Blog and Technical Stuff</Link>.
-                  <br /> Recent: <u>Blog # 3</u>.
-                  <br /> Popular: <u>Blog # 1</u>, <u>Blog # 2</u> and{" "}
-                  <u>Blog # 3</u>.
                 </div>
               </li>
               <li>
@@ -118,9 +113,29 @@ const Index = styled.div`
     max-height: 600px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr 35px auto auto auto;
+    grid-template-rows: 1fr auto auto auto auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+
+    @media only screen and (max-width: 600px) {
+      & {
+        width: 375px;
+      }
+
+      & h1 {
+        font-size: 58px;
+      }
+
+      & h6 {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      & .blurb,
+      & .mini-menu {
+        font-size: 14px;
+      }
+    }
 
     & h1 {
       margin-left: -7px;
