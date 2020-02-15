@@ -3,13 +3,13 @@ import { createGlobalStyle } from "styled-components"
 import Nav from "./Nav"
 import Footer from "./Footer"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, container }) => {
   return (
     <>
       <GlobalStyle theme="light" />
       <div className="top-bar" />
       <Nav />
-      <main>{children}</main>
+      <main className={container ? "container" : ""}>{children}</main>
       <Footer />
     </>
   )
@@ -52,6 +52,11 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .container {
+    width: 650px;
+    margin: 0 auto 50px auto;
+  }
+
   h1 {
     font-family: 'Libre Franklin', sans-serif;
     font-style: normal;
@@ -70,6 +75,17 @@ const GlobalStyle = createGlobalStyle`
     margin: 5px 0;
     padding: 0;
   }
+
+  @media only screen and (max-width: 600px) {
+    h1 {
+      font-size: 42px;
+    }
+
+    .container {
+      width: 375px;
+    }
+  }
+
 `
 
 export default Layout

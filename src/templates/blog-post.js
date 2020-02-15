@@ -2,19 +2,15 @@ import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
+import MiniNav from "../components/MiniNav"
 
 export default ({ pageContext }) => {
   const { post } = pageContext
 
-  console.log(pageContext)
-
   return (
     <Layout>
       <StyledBlogPost>
-        <div className="blog-menu">
-          <Link to="/blog">Blog Posts</Link>
-          <Link to="/">Home</Link>
-        </div>
+        <MiniNav isBlogPost />
         <h1>{post.title}</h1>
         <h6 dangerouslySetInnerHTML={{ __html: post.excerpt }}></h6>
         <p id="blog_meta_header">
@@ -58,14 +54,7 @@ const StyledBlogPost = styled.div`
     }
   }
 
-  & .blog-menu {
-    display: flex;
-    justify-content: space-between;
-    margin: 30px 0 25px 0;
-  }
-
   & h1 {
-    margin-left: -7px;
     line-height: 88.78%;
   }
 
@@ -95,6 +84,10 @@ const StyledBlogPost = styled.div`
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) inset,
       0 0 20px rgba(0, 0, 0, 0.2) inset;
     white-space: pre-wrap;
+  }
+
+  .blog-tag {
+    text-transform: capitalize;
   }
 
   & #blog_meta_footer {

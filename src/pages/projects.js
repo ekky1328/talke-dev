@@ -1,18 +1,17 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
+import MiniNav from "../components/MiniNav"
 
 export default () => {
   return (
-    <Layout>
+    <Layout container>
       <Index>
-        <h1>Projects</h1>
+        <MiniNav isSubPage />
+        <h1>My Projects</h1>
       </Index>
     </Layout>
   )
 }
 
-const Index = styled.div`
-  width: 450px;
-`
+const Index = styled.div``

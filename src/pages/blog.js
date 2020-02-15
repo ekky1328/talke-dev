@@ -1,16 +1,54 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
+import MiniNav from "../components/MiniNav"
+import BlogPostCard from "../components/BlogPostCard"
 
 export default () => {
+  const data = useStaticQuery(graphql`
+    {
+      wp {
+        posts {
+          nodes {
+            id
+            slug
+            date
+            title
+            excerpt
+            tags {
+              nodes {
+                id
+                slug
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
+
   return (
-    <Layout>
+    <Layout container>
       <Index>
-        <h1>Blog & Technical Stuff</h1>
+        <MiniNav isSubPage />
+        <h1>My Blog Posts</h1>
+        <div className="blog-posts">
+          {data.wp.posts.nodes.map((post, index) => (
+            <BlogPostCard
+              post={post}
+              isLast={index === data.wp.posts.nodes.length - 1 ? true : false}
+            />
+          ))}
+        </div>
       </Index>
     </Layout>
   )
 }
 
-const Index = styled.div``
+const Index = styled.div`
+  & .blog-posts {
+    margin: 25px 0;
+  }
+`
