@@ -1,116 +1,109 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
 
-export default () => {
-  const {
-    wp: {
-      page: {
-        homePage: {
-          title,
-          subtitle,
-          blurb,
-          email,
-          emailsubject,
-          twitter,
-          linkedin,
-          github,
-        },
-      },
-    },
-  } = useStaticQuery(graphql`
-    query MyQuery {
-      wp {
-        page(id: "cGFnZToy") {
-          homePage {
-            subtitle
-            title
-            blurb
-            email
-            emailsubject
-            twitter
-            linkedin
-            github
-          }
-        }
-      }
-    }
-  `)
+import BlogPostCard from "../components/BlogPostCard"
 
+export default ({ data }) => {
+  const posts = data.allMdx.edges
   return (
     <Layout>
       <Index>
         <div className="home-page">
-          <h1>{title}</h1>
-          <h6>{subtitle}</h6>
-          <div
-            className="blurb"
-            dangerouslySetInnerHTML={{ __html: blurb }}
-          ></div>
-          <hr className="split" />
-          <div className="mini-menu">
-            <ul>
-              <li>
-                <div>01.</div>
-                <div>
-                  <Link to="/about-me">About Me</Link>.
-                </div>
-              </li>
-              <li>
-                <div>02.</div>
-                <div>
-                  <Link to="/projects">Personal Projects</Link>.
-                </div>
-              </li>
-              <li>
-                <div>03.</div>
-                <div>
-                  <Link to="/blog">Blog and Technical Stuff</Link>.
-                </div>
-              </li>
-              <li>
-                <div>04.</div>
-                <div>
-                  <a
-                    href={`mailto:${email}?Subject=${emailsubject}`}
-                    target="_top"
-                  >
-                    Get in touch
-                  </a>{" "}
-                  or check out my other socials:{" "}
-                  <a href={github} target="_blank" rel="noopener noreferrer">
-                    Github
-                  </a>
-                  ,{" "}
-                  <a href={twitter} target="_blank" rel="noopener noreferrer">
-                    Twitter
-                  </a>{" "}
-                  and{" "}
-                  <a href={linkedin} target="_blank" rel="noopener noreferrer">
-                    LinkedIn
-                  </a>
-                  .
-                </div>
-              </li>
-            </ul>
+          <h1>G'day, I'm Chris Talke.</h1>
+          <h6>Welcome to my corner of the internet.</h6>
+          <div className="blurb">
+            <p>
+              I’m a Fullstack Web Developer & IT Professional based in New South
+              Wales, Australia.
+            </p>
+            <p>
+              I design and develop websites and applications. I solve technical
+              problems for small to medium sized businesses.
+            </p>
+            <p>This is my place to write about… tech? stuff?</p>
           </div>
+          <hr className="split" />
+          <div className="span">
+            <p>
+              <a
+                href={`mailto:info@christopher-talke.dev?Subject="Hi!"`}
+                target="_top"
+              >
+                Get in touch
+              </a>{" "}
+              or check out my other socials:
+              <br />
+              <br />-{" "}
+              <a
+                href="https://github.com/christopher-talke"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github
+              </a>
+              ,{" "}
+              <a
+                href="https://twitter.com/cbtalke"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Twitter
+              </a>{" "}
+              or{" "}
+              <a
+                href="https://www.linkedin.com/in/ctalke/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+        <div className="blog-card-column">
+          {posts.map(post => (
+            <BlogPostCard {...post} />
+          ))}
         </div>
       </Index>
     </Layout>
   )
 }
 
+export const query = graphql`
+  {
+    allMdx {
+      edges {
+        node {
+          frontmatter {
+            date(formatString: "YYYY-MM-DD")
+            slug
+            subtitle
+            title
+            tags
+          }
+          timeToRead
+        }
+      }
+    }
+  }
+`
+
 const Index = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  grid-column-gap: 50px;
+  max-width: 960px;
+  padding-top: 100px;
+  margin: 0 auto;
 
   div.home-page {
-    width: 450px;
-    max-height: 600px;
+    width: 350px;
+    max-height: 300px;
+
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr auto auto auto auto;
@@ -123,17 +116,16 @@ const Index = styled.div`
       }
 
       & h1 {
-        font-size: 58px;
+        font-size: 54px;
       }
 
       & h6 {
-        font-size: 16px;
+        font-size: 14px;
         margin-bottom: 6px;
       }
 
-      & .blurb,
-      & .mini-menu {
-        font-size: 14px;
+      p {
+        font-size: 9px;
       }
     }
 
@@ -164,24 +156,9 @@ const Index = styled.div`
       grid-row: 4/5;
     }
 
-    & .mini-menu {
+    & .span {
       grid-column: 1/5;
       grid-row: 5/6;
     }
-  }
-
-  div.mini-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  div.mini-menu ul li {
-    display: flex;
-    margin: 17px 0;
-  }
-
-  div.mini-menu ul li div:nth-of-type(1) {
-    margin-right: 15px;
   }
 `

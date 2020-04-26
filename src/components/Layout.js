@@ -1,14 +1,25 @@
 import React from "react"
+import { Helmet } from "react-helmet"
 import { createGlobalStyle } from "styled-components"
-import Nav from "./Nav"
 import Footer from "./Footer"
 
-const Layout = ({ children, container }) => {
+const Layout = ({ children, container, title }) => {
+  function generateTitle(title) {
+    if (title === undefined) {
+      return "talke.dev"
+    }
+    return `${title} | talke.dev`
+  }
+
   return (
     <>
       <GlobalStyle theme="light" />
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{generateTitle(title)}</title>
+        <link rel="icon" type="image/png" href="/icon.png" sizes="16x16" />
+      </Helmet>
       <div className="top-bar" />
-      <Nav />
       <main className={container ? "container" : ""}>{children}</main>
       <Footer />
     </>
@@ -21,15 +32,15 @@ const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Cousine:400,700&display=swap');
 
   :root {
-    --text-size: 14px;
-    --main-colour: #004374;
+    --text-size: 12px;
+    --main-colour: #000;
     --secondary-colour: #797979;
   }
 
   body {
     font-family: 'Cousine', monospace;
     font-size: var(--text-size);
-    background-color: #f1f1f1;
+    background-color: #fff;
     color: var(--secondary-colour);
     margin: 0;
     padding: 0;
@@ -61,7 +72,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Libre Franklin', sans-serif;
     font-style: normal;
     font-weight: 800;
-    font-size: 60px;
+    font-size: 54px;
     color: var(--main-colour);
     margin: 0;
     padding: 0;
@@ -71,7 +82,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Cousine', monospace;
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 15px;
     margin: 5px 0;
     padding: 0;
   }

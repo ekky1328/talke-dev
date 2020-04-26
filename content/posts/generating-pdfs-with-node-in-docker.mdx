@@ -1,0 +1,192 @@
+---
+title: Generating PDFs with NodeJS in Docker
+subtitle: My experience trying to Dockerise a NodeJS application using the Puppeteer library, this is an old medium post migrated to my blog.
+slug: generating-pdfs-with-node-in-docker
+tags: Programming,JavaScript,NodeJS
+date: 2019-02-01
+id: 1
+---
+
+If you are a developer, you may have needed to reach out for some type of headless browser library to get a particular job done (… or you are a product owner, and have needed a solution that required just that).
+
+In my case I had created a web scrapping application that produced a JSON API. With this structured data, I used it to produce a printable document using server side rendered HTML with some print friendly CSS styling. From here I needed to save this to a PDF for client consumption, the lazy solution was to just have the end user “print” the page to a PDF, however, print CSS browser support isn’t the same across all browsers and as you could have guessed, I was left with an inconsistent output across all major browsers. But I knew that Chromes print to PDF output worked, and because of this I needed to look at using a headless chromium based browser to produce the PDF I needed.
+
+So to achieve this I installed a library called puppeteer using the following command
+
+```bash
+npm i puppeteer
+```
+
+I first produced a controller function that would open a puppeteer instance, render a page (in my instance it is the route that generates the Server Side Rendered HTML), generates a PDF, which is then returned as a buffer to be used elsewhere.
+
+```js
+const puppeteer - require('puppeteer')
+const saveToPdf = async url => {
+      const renderURL = `http://localhost:3000/pdf/render?url=${url}`;
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.goto(renderURL);
+      const pdf = await page.pdf();
+      await browser.close();
+      return pdf
+}
+
+module.exports = saveToPdf;
+```
+
+This buffer then allowed me to send a PDF document back to the client without writing to disk, I opted to complete this final step inside a http route.
+
+```javascript
+const saveToPdf = require('../controller/saveToPdf.js');
+
+router.get('/pdf/generate', async (req,res) => {
+     const result = await saveToPdf(req.query.url);
+     res.attachment('generated.pdf');
+     res.contentType('application/pdf');
+     res.send(result);
+}
+```
+
+Now I had a small node “app” that renders a PDF document. I could successfully pass a PDF document from the server to the client with a consistent outcome, if you are interested in the overall codebase, I have included below a link to an example repo below I have modified from this original project.
+
+Repo Link – https://bit.ly/2TpWgZk
+
+Now onto deployment (which is what you are probably here for)…
+
+Deployment to a Virtual Machine
+Deployment is no problem if I was simply deploying this directly onto a virtual machine, here is a quick example of that, in this instance I used Ubuntu LTS 18.04 in a DigitalOcean droplet.
+
+But I can probably guess this isn’t what you are here for, you probably want to know how to deploy this using docker, so let’s see what I did to get this working.
+
+```bash
+// Install Curl, NodeJS & Git
+sudo apt install curl
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+sudo apt install nodejs
+sudo apt install git-all
+
+// Install Chrome
+wget -q -D - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-get add -
+echo 'deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+sudo apt-get update
+sudo apt-get install google-chrome-stable
+
+// Git Clone and NPM Install
+git clone https://github.com/path/to/your/repo
+npm install
+npm run start
+```
+
+Deployment to a Docker Image
+Now please understand that this was a huge headache for me, and my motivation behind writing this is too hopefully make another persons life MUCH easier.
+
+In the production, I actually utilised the NodeJS-Alpine Docker Image to save disk space, and I may address deployments with this at a later date as it takes more work, but for the sake of simplicity, I will show you how I initially used the default NodeJS Docker Image.
+
+First I made a Dockerfile in the root of my project, I’ve included an example below which was sourced from the puppeteer docs, however, this was modified to work with my app.
+
+```dockerfile
+FROM node:10.15
+
+RUN apt-get update && apt-get install -y wget --no-install-recommends \
+  && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+  && apt-get update \
+  && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
+  --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get purge --auto-remove -y curl \
+  && rm -rf /src/*.deb
+
+
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init
+
+WORKDIR /app
+COPY . .
+
+RUN npm install
+RUN npm install puppeteer
+EXPOSE 3000
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD npm run start
+```
+
+Puppeteer Docs – https://bit.ly/2G4rEcT
+
+As you can see this Dockerfile has been split into 6 sections, I’ll explain each section below to the best of my knowledge:
+
+```dockerfile
+FROM node:10.15
+```
+
+This layer grabs the NodeJS Docker Image from the Docker Hub, in this case targeting the latest LTS version
+
+```dockerfile
+RUN apt-get update && apt-get install -y wget --no-install-recommends \
+  && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+  && apt-get update \
+  && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
+  --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get purge --auto-remove -y curl \
+  && rm -rf /src/*.deb
+```
+
+This section downloads and installs chromium, and the necessary dependencies that puppeteer requires to run.
+
+```dockerfile
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init
+```
+
+This section downloads and installs dumb-init which is a small process handler written in C that is recommened to be used within our docker image, in short this will ensure that there are no zombie instances/processes of chrome (or other processes you are targeting) from running if your script fails to close a target instance/process (just imagine having 1000s of dead chrome tabs running, eventually you will run out of resources without this!)
+
+```dockerfile
+WORKDIR /app
+COPY . .
+```
+
+This section creates a folder, opens the directory and copies our project files from your machine into the directory in the docker image.
+
+```dockerfile
+RUN npm install
+RUN npm install puppeteer
+EXPOSE 3000
+```
+
+This installs all production packages/dependencies for our application from the package.json file we copied over, it then exposes the port in the docker image which is the same port we have chosen within our express app.
+
+```dockerfile
+ENTRYPOINT ["dumb-init", "--"]
+CMD npm run start
+```
+
+This creates an entrypoint for our commands, as noted earlier we are using the dumb-init process handler as an entrypoint, this will prefix our final command which starts starts the application!
+
+Before I started building the docker image, I made sure to create a .dockerignore file in the project directory just so I didn’t copy the node_modules folder into the docker image during section 4. This was a critical step as it ensured I didn’t bring over a version of chromium that was incompatible with the Linux distribution used by the docker image.
+
+```md
+node_modules
+node_modules/\*
+```
+
+Once I had completed this, I went ahead and built my docker image, once built I found the ID of the built image and then created a docker container (see below for basic docker commands).
+
+```bash
+# Build Docker Image
+docker build -t <NAME-OF-YOUR-CHOICE> .
+
+# Find built image ID
+docker image ls
+
+# Run Docker Image
+docker run -p 3000:3000 <IMAGE-ID-OR-NAME>
+```
+
+I was now able to visit localhost:3000 and generate the necessary PDF Document using my docker image, from here I was ready to put this into production, however, as mentioned earlier, I didn’t use the normal NodeJS Docker image after all. My reasoning behind this is because the size of the Docker Image, with this particular method it ends up being around 1.9GB in size!
+
+After moving to the NodeJS-Alpine image, the docker image ended up being around 500–650Mb. Which is a huge reduction in comparison, however, even that is a pretty large image for docker. There are other methods I’ve discovered which I am yet to try using Amazons serverless functions, once I’ve played with this and understand it a bit more I’ll try and address this too!
+
+TLDR; If you are just interested in the code, please have a look at the example repo I have created and linked for reference: https://bit.ly/2TpWgZk

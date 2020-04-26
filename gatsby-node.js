@@ -1,40 +1,41 @@
-const path = require(`path`)
+const path = require("path")
 
-exports.createPages = async ({ graphql, actions }) => {
+exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
-  const blogTemplate = path.resolve("src/templates/blog-post.js")
-  const blogData = await graphql(`
-    {
-      wp {
-        posts {
-          nodes {
+  const result = await graphql(`
+    query {
+      allMdx {
+        edges {
+          node {
             id
-            slug
-            date
-            title
-            excerpt
-            content
-            tags {
-              nodes {
-                name
-              }
+            frontmatter {
+              date(formatString: "YYYY-MM-DD")
+              id
+              slug
+              subtitle
+              title
+              tags
             }
-            author {
-              firstName
-              lastName
-            }
+            body
+            timeToRead
           }
         }
       }
     }
   `)
 
-  blogData.data.wp.posts.nodes.forEach(post => {
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  }
+
+  const posts = result.data.allMdx.edges
+
+  posts.forEach(({ node }) => {
     createPage({
-      path: `/blog/${post.slug}`,
-      component: blogTemplate,
+      path: node.frontmatter.slug,
+      component: path.resolve(`./src/pages/posts.js`),
       context: {
-        post,
+        id: node.id,
       },
     })
   })

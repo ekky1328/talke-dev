@@ -2,49 +2,42 @@ import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 
-const BlogPostCard = ({ post, isLast }) => {
+const BlogPostCard = ({ node: { frontmatter } }) => {
   return (
     <>
       <StyledBlogPostCard>
         <div className="blog-meta">
-          <Link to={`/blog/${post.slug}`}>
-            <h2>{post.title}</h2>
+          <Link to={`/${frontmatter.slug}`}>
+            <h2>{frontmatter.title}</h2>
           </Link>
-          <p>{post.date.split("T")[0]}</p>
+          <p>{frontmatter.date}</p>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: post.excerpt }}></div>
+        <div>{frontmatter.subtitle}</div>
         <div className="topics">
-          {post.tags.nodes.map((tag, key) => (
-            <>
-              {key === post.tags.nodes.length - 1 ? ` & ` : ""}
-              <Link
-                className="blog-tag"
-                to={`/topics/${tag.name}`}
-                key={`${tag.name}-${key}`}
-              >
-                {tag.name}
-              </Link>
-              {key < post.tags.nodes.length - 2 ? `, ` : ""}
-            </>
-          ))}
+          <span>{frontmatter.tags}</span>
         </div>
       </StyledBlogPostCard>
-      {isLast ? "" : <hr />}
     </>
   )
 }
 
 const StyledBlogPostCard = styled.div`
   transition: all 200ms;
-  padding: 10px;
-  padding-bottom: 15px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 400;
+  display: block;
+  padding: 23px 23px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
 
   hr {
     margin: 0;
   }
 
   &:hover {
-    background: #d9dfe3;
+    transform: scale(1.02);
   }
 
   & .blog-meta {
@@ -52,6 +45,7 @@ const StyledBlogPostCard = styled.div`
     justify-content: space-between;
 
     p {
+      text-align: right;
       min-width: 100px;
     }
   }
