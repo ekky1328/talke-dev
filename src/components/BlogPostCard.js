@@ -14,6 +14,7 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
         </div>
         <div>{frontmatter.subtitle}</div>
         <div className="topics">
+          <strong>Topics </strong>
           <span>{frontmatter.tags}</span>
         </div>
       </StyledBlogPostCard>
@@ -22,14 +23,14 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
 }
 
 const StyledBlogPostCard = styled.div`
-  transition: all 200ms;
+  position: relative;
+  transition: all 500ms;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 400;
   display: block;
+  border: 1px solid rgba(0, 0, 0, 0);
   padding: 23px 23px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
 
   hr {
@@ -37,7 +38,8 @@ const StyledBlogPostCard = styled.div`
   }
 
   &:hover {
-    transform: scale(1.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
 
   & .blog-meta {

@@ -4,7 +4,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   const result = await graphql(`
     query {
-      allMdx {
+      allMdx(filter: { frontmatter: { publish: { eq: true } } }) {
         edges {
           node {
             id
@@ -15,6 +15,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               subtitle
               title
               tags
+              publish
             }
             body
             timeToRead

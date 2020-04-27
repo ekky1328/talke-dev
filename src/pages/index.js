@@ -15,33 +15,41 @@ export default ({ data }) => {
           <h6>Welcome to my corner of the internet.</h6>
           <div className="blurb">
             <p>
-              I’m a Fullstack Web Developer & IT Professional based in New South
-              Wales, Australia.
+              I'm an IT Professional based in Coffs Harbour, New South Wales
+              with an uncanny love for web development.
             </p>
             <p>
-              I design and develop websites and applications. I solve technical
-              problems for small to medium sized businesses.
+              I've always used some type of technology to solve problems in my
+              life, and this is my place to share my findings and learnings.
+              Hopefully in the process of sharing knowledge I can help others
+              who are learning, or seeking answers to problems I may have
+              solved.
             </p>
-            <p>This is my place to write about… tech? stuff?</p>
-          </div>
-          <hr className="split" />
-          <div className="span">
             <p>
+              This blog will typically cover anything to do with web
+              development, linux server things or janky networking stuff. I'm
+              not going to limit this blog, but it is mostly going to be based
+              around tech!
+            </p>
+            <p>
+              Just keep in mind I'm not an expert in many things, I learn enough
+              to solve problems and I hope you can find value in that.
+            </p>
+            <p>
+              If you have any questions or just want to chat, feel free to{" "}
               <a
                 href={`mailto:info@christopher-talke.dev?Subject="Hi!"`}
                 target="_top"
               >
-                Get in touch
+                get in touch
               </a>{" "}
-              or check out my other socials:
-              <br />
-              <br />-{" "}
+              or check out my{" "}
               <a
                 href="https://github.com/christopher-talke"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Github
+                github
               </a>
               ,{" "}
               <a
@@ -49,7 +57,7 @@ export default ({ data }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Twitter
+                twitter
               </a>{" "}
               or{" "}
               <a
@@ -57,7 +65,7 @@ export default ({ data }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                LinkedIn
+                linkedin
               </a>
               .
             </p>
@@ -75,7 +83,10 @@ export default ({ data }) => {
 
 export const query = graphql`
   {
-    allMdx {
+    allMdx(
+      sort: { order: DESC, fields: frontmatter___date }
+      filter: { frontmatter: { publish: { eq: true } } }
+    ) {
       edges {
         node {
           frontmatter {
@@ -94,8 +105,8 @@ export const query = graphql`
 
 const Index = styled.div`
   display: grid;
-  grid-template-columns: 350px 1fr;
-  grid-column-gap: 50px;
+  grid-template-columns: 375px 1fr;
+  grid-column-gap: 25px;
   max-width: 960px;
   padding-top: 100px;
   margin: 0 auto;

@@ -17,9 +17,11 @@ export default ({ data }) => {
           <strong>Published</strong> {mdx.frontmatter.date}
         </p>
         <hr />
-        <MDXProvider>
-          <MDXRenderer>{mdx.body}</MDXRenderer>
-        </MDXProvider>
+        <article>
+          <MDXProvider>
+            <MDXRenderer>{mdx.body}</MDXRenderer>
+          </MDXProvider>
+        </article>
         <hr />
         <p id="blog_meta_footer">
           <p>
@@ -61,6 +63,10 @@ const StyledBlogPost = styled.div`
   max-width: 650px;
   margin: 50px auto 50px auto;
 
+  & article {
+    line-height: 1.5;
+  }
+
   @media only screen and (max-width: 600px) {
     & {
       max-width: 375px;
@@ -69,6 +75,14 @@ const StyledBlogPost = styled.div`
 
   & h1 {
     line-height: 88.78%;
+  }
+
+  h4 {
+    margin-bottom: 5px;
+  }
+
+  h4 + p {
+    margin-top: 0px;
   }
 
   & #blog_meta_header {
@@ -80,11 +94,6 @@ const StyledBlogPost = styled.div`
     border: 0;
     margin: 20px 0;
     border-top: 1px solid rgba(0, 67, 116, 0.35);
-  }
-
-  p {
-    margin-left: 15px;
-    margin-right: 15px;
   }
 
   & img {
@@ -100,11 +109,17 @@ const StyledBlogPost = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
+    margin: 30px 0;
+    line-height: 1.4;
+    transform: scale(1.05);
   }
 
   code.grvsc-code {
     white-space: pre-wrap;
+  }
+
+  .twitter-tweet {
+    margin: 20px auto !important;
   }
 
   & #blog_meta_footer {

@@ -32,9 +32,14 @@ const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Cousine:400,700&display=swap');
 
   :root {
-    --text-size: 12px;
+    --text-size: 14px;
     --main-colour: #000;
     --secondary-colour: #797979;
+  }
+
+  ::selection {
+    color: white;
+    background: var(--main-colour);
   }
 
   body {
@@ -82,7 +87,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Cousine', monospace;
     font-style: normal;
     font-weight: normal;
-    font-size: 15px;
+    font-size: 17px;
     margin: 5px 0;
     padding: 0;
   }
