@@ -21,6 +21,7 @@ npm i puppeteer
 I first produced a controller function that would open a puppeteer instance, render a page (in my instance it is the route that generates the Server Side Rendered HTML), generates a PDF, which is then returned as a buffer to be used elsewhere.
 
 ```js
+// Header: ../controller/saveToPdf.js
 const puppeteer - require('puppeteer')
 const saveToPdf = async url => {
       const renderURL = `http://localhost:3000/pdf/render?url=${url}`;
@@ -37,7 +38,8 @@ module.exports = saveToPdf;
 
 This buffer then allowed me to send a PDF document back to the client without writing to disk, I opted to complete this final step inside a http route.
 
-```javascript
+```js
+// Header: ../route/index.js
 const saveToPdf = require('../controller/saveToPdf.js');
 
 router.get('/pdf/generate', async (req,res) => {

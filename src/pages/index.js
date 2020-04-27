@@ -111,10 +111,12 @@ const Index = styled.div`
   padding-top: 100px;
   margin: 0 auto;
 
-  div.home-page {
-    width: 350px;
-    max-height: 300px;
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    padding-top: 50px;
+  }
 
+  div.home-page {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr auto auto auto auto;
@@ -123,7 +125,9 @@ const Index = styled.div`
 
     @media only screen and (max-width: 600px) {
       & {
-        width: 375px;
+        margin: 0 auto;
+        margin-bottom: 25px;
+        padding: 0 20px;
       }
 
       & h1 {
@@ -133,10 +137,6 @@ const Index = styled.div`
       & h6 {
         font-size: 14px;
         margin-bottom: 6px;
-      }
-
-      p {
-        font-size: 9px;
       }
     }
 
