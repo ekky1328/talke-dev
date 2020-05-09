@@ -1,15 +1,17 @@
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import { graphql } from "gatsby"
 import styled from "styled-components"
 import Layout from "../components/Layout"
 
-export default ({ data }) => {
-  const { mdx } = data
-  console.log(mdx.frontmatter.tags.split(","))
+export default props => {
+  console.log(props.data)
+
+  const { mdx, previous, next } = props.data
   const tags = mdx.frontmatter.tags.split(",")
   return (
-    <Layout title={mdx.frontmatter.title}>
+    <Layout title={mdx.frontmatter.title} blog blogMenu={{ previous, next }}>
       <StyledBlogPost>
         <h1>{mdx.frontmatter.title}</h1>
         <h6>{mdx.frontmatter.subtitle}</h6>
@@ -43,7 +45,7 @@ export default ({ data }) => {
 }
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String) {
+  query BlogPostQuery($id: String, $prev: String, $next: String) {
     mdx(id: { eq: $id }) {
       frontmatter {
         date(formatString: "YYYY-MM-DD")
@@ -56,12 +58,28 @@ export const pageQuery = graphql`
       body
       timeToRead
     }
+
+    previous: mdx(id: { eq: $prev }) {
+      frontmatter {
+        slug
+        title
+        publish
+      }
+    }
+
+    next: mdx(id: { eq: $next }) {
+      frontmatter {
+        slug
+        title
+        publish
+      }
+    }
   }
 `
 
 const StyledBlogPost = styled.div`
   max-width: 650px;
-  margin: 50px auto 50px auto;
+  margin: 70px auto 50px auto;
 
   & article {
     line-height: 1.5;

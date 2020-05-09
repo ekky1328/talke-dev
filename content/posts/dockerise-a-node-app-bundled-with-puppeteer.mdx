@@ -21,7 +21,6 @@ npm i puppeteer
 I first produced a controller function that would open a puppeteer instance, render a page (in my instance it is the route that generates the Server Side Rendered HTML), generates a PDF, which is then returned as a buffer to be used elsewhere.
 
 ```js
-// Header: ../controller/saveToPdf.js
 const puppeteer - require('puppeteer')
 const saveToPdf = async url => {
       const renderURL = `http://localhost:3000/pdf/render?url=${url}`;
@@ -39,7 +38,6 @@ module.exports = saveToPdf;
 This buffer then allowed me to send a PDF document back to the client without writing to disk, I opted to complete this final step inside a http route.
 
 ```js
-// Header: ../route/index.js
 const saveToPdf = require('../controller/saveToPdf.js');
 
 router.get('/pdf/generate', async (req,res) => {
@@ -62,19 +60,19 @@ Deployment is no problem if I was simply deploying this directly onto a virtual 
 But I can probably guess this isn’t what you are here for, you probably want to know how to deploy this using docker, so let’s see what I did to get this working.
 
 ```bash
-// Install Curl, NodeJS & Git
+# Install Curl, NodeJS & Git
 sudo apt install curl
 curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
 sudo apt install nodejs
 sudo apt install git-all
 
-// Install Chrome
+# Install Chrome
 wget -q -D - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-get add -
 echo 'deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
 sudo apt-get update
 sudo apt-get install google-chrome-stable
 
-// Git Clone and NPM Install
+# Git Clone and NPM Install
 git clone https://github.com/path/to/your/repo
 npm install
 npm run start

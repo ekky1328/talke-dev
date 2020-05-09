@@ -72,6 +72,7 @@ export default ({ data }) => {
           </div>
         </div>
         <div className="blog-card-column">
+          <h3 id="recent-posts">Recent Posts</h3>
           {posts.map(post => (
             <BlogPostCard {...post} />
           ))}
@@ -104,12 +105,13 @@ export const query = graphql`
 `
 
 const Index = styled.div`
-  display: grid;
-  grid-template-columns: 375px 1fr;
-  grid-column-gap: 25px;
   max-width: 960px;
   padding-top: 100px;
   margin: 0 auto;
+  position: relative;
+  display: grid;
+  grid-template-columns: 375px 1fr;
+  grid-column-gap: 35px;
 
   @media only screen and (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -170,6 +172,49 @@ const Index = styled.div`
     & .span {
       grid-column: 1/5;
       grid-row: 5/6;
+    }
+  }
+
+  .blog-card-column {
+    position: relative;
+
+    &::after {
+      width: 1px;
+      height: 400px;
+      content: "";
+      background: grey;
+      opacity: 0.35;
+      position: absolute;
+      top: 200px;
+      left: -20px;
+      z-index: 25;
+    }
+
+    & h3 {
+      position: absolute;
+      z-index: 50;
+      display: block;
+      font-size: 24px;
+      opacity: 0.35;
+      background: white;
+      transform: rotate(-90deg);
+      top: 50px;
+      left: -100px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      &::after {
+        display: none;
+      }
+
+      & h3 {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: rotate(0deg);
+        margin: 0;
+        text-align: center;
+      }
     }
   }
 `

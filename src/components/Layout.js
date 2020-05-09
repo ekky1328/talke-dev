@@ -3,7 +3,15 @@ import { Helmet } from "react-helmet"
 import { createGlobalStyle } from "styled-components"
 import Footer from "./Footer"
 
-const Layout = ({ children, container, title }) => {
+const Layout = ({
+  children,
+  container,
+  title,
+  blog,
+  blogMenu = { next: null, previous: null },
+}) => {
+  const { previous, next } = blogMenu
+
   function generateTitle(title) {
     if (title === undefined) {
       return "talke.dev"
@@ -13,13 +21,45 @@ const Layout = ({ children, container, title }) => {
 
   return (
     <>
-      <GlobalStyle theme="light" />
+      <GlobalStyle theme="light" blog={blog} />
       <Helmet>
         <meta charSet="utf-8" />
         <title>{generateTitle(title)}</title>
         <link rel="icon" type="image/png" href="/icon.png" sizes="16x16" />
       </Helmet>
-      <div className="top-bar" />
+      <div className="top-bar">
+        {blog !== undefined ? (
+          <div className="blog-menu">
+            {previous === null ? (
+              <a
+                className="disabled-link"
+                href="/"
+                onClick={e => e.preventDefault()}
+              >
+                Previous
+              </a>
+            ) : (
+              <a href={previous.frontmatter.slug}>Previous</a>
+            )}
+
+            <a href="/">Home</a>
+
+            {next === null ? (
+              <a
+                className="disabled-link"
+                href="/"
+                onClick={e => e.preventDefault()}
+              >
+                Next
+              </a>
+            ) : (
+              <a href={next.frontmatter.slug}>Next</a>
+            )}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       <main className={container ? "container" : ""}>{children}</main>
       <Footer />
     </>
@@ -55,8 +95,35 @@ const GlobalStyle = createGlobalStyle`
     position: absolute;
     top: 0;
     background-color: var(--main-colour);
-    height: 10px;
+    height: ${props => (props.blog !== undefined ? "30px" : "10px")};
+    transition: height 0.5s;
     width: 100%;
+
+      .blog-menu {
+      max-width: 650px;
+      height: 30px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+        a {
+          color: white;
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        a.disabled-link {
+          opacity: 0.75;
+          text-decoration: line-through;
+          cursor: not-allowed;
+        }
+
+      }
+
   }
 
   a {

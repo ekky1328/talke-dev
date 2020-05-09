@@ -4,7 +4,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   const result = await graphql(`
     query {
-      allMdx(filter: { frontmatter: { publish: { eq: true } } }) {
+      allMdx(
+        filter: { frontmatter: { publish: { eq: true } } }
+        sort: { order: ASC, fields: frontmatter___date }
+      ) {
         edges {
           node {
             id
@@ -31,12 +34,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const posts = result.data.allMdx.edges
 
-  posts.forEach(({ node }) => {
+  posts.forEach(({ node }, index) => {
+    const previousPost = posts[index - 1]
+    const nextPost = posts[index + 1]
+
     createPage({
       path: node.frontmatter.slug,
       component: path.resolve(`./src/pages/posts.js`),
       context: {
         id: node.id,
+        prev: previousPost === undefined ? null : previousPost.node.id,
+        next: nextPost !== undefined ? nextPost.node.id : null,
       },
     })
   })

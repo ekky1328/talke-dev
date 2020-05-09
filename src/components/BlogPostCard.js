@@ -10,12 +10,17 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
           <Link to={`/${frontmatter.slug}`}>
             <h2>{frontmatter.title}</h2>
           </Link>
-          <p>{frontmatter.date}</p>
         </div>
-        <div>{frontmatter.subtitle}</div>
-        <div className="topics">
-          <strong>Topics </strong>
-          <span>{frontmatter.tags}</span>
+        <div className="subtitle">{frontmatter.subtitle}</div>
+        <div className="meta">
+          <div className="topics">
+            <strong>Topics </strong>
+            <span>{frontmatter.tags}</span>
+          </div>
+          <div className="publishDate">
+            <strong>Date </strong>
+            <span>{frontmatter.date}</span>
+          </div>
         </div>
       </StyledBlogPostCard>
     </>
@@ -37,11 +42,6 @@ const StyledBlogPostCard = styled.div`
     margin: 0;
   }
 
-  &:hover {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-
   & .blog-meta {
     display: flex;
     justify-content: space-between;
@@ -56,8 +56,14 @@ const StyledBlogPostCard = styled.div`
     text-transform: capitalize;
   }
 
-  & .topics {
+  & .subtitle {
+    margin-top: 5px;
+  }
+
+  & .meta {
     margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
   }
 
   & h2 {
@@ -66,6 +72,12 @@ const StyledBlogPostCard = styled.div`
 
   & p {
     margin: 5px 0 5px 0;
+  }
+
+  @media only screen and (max-width: 600px) {
+    & .meta {
+      flex-direction: column;
+    }
   }
 `
 
