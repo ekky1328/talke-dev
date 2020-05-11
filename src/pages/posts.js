@@ -103,15 +103,18 @@ const StyledBlogPost = styled.div`
     line-height: 88.78%;
   }
 
+  h2,
   h4 {
     margin-top: 45px;
     margin-bottom: 5px;
   }
 
+  h2:nth-of-type(1),
   h4:nth-of-type(1) {
     margin-top: 25px;
   }
 
+  h2 + p,
   h4 + p {
     margin-top: 0px;
   }
