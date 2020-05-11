@@ -19,7 +19,7 @@ This post won't explain what Strapi is, how it works, or even when you should us
 This post will instead explain how to modify the included plugin `strapi-plugin-users-permissions` in order to force it to use server side cookies and give you the ability to set `http only` or `secure` options. This will ensure that your frontend application does not have to store sensitive data such as JWT's in client side local, session or cookie storage for future authenticated requests.
 
 <div className="alert warning">
-  If you want to understand why using avoiding use of client side storage is important and a potential security risk, check out these resources for reference:
+  If you want to understand why avoiding use of client side storage is important and a mitigates potential security risk, check out these resources for reference:
 
   - <a href="https://auth0.com/docs/tokens/concepts/token-storage">Token Storage by <strong>Auth0</strong></a>
   - <a href="https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage">Where to Store your JWT's – Cookies vs HTML5 Web Storage by{" "}<strong>Tom Abbott</strong></a>
