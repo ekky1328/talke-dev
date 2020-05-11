@@ -6,6 +6,7 @@ import styled from "styled-components"
 
 import Layout from "../components/Layout"
 import Tags from "../components/Tags"
+import Github from "../components/Github"
 
 export default props => {
   const { mdx, previous, next } = props.data
@@ -33,6 +34,19 @@ export default props => {
           <strong>Topics</strong>
           <Tags tags={mdx.frontmatter.tags} />
         </p>
+        <div className="github-edit">
+          <Github />
+          <div>
+            Find an issue with this post? Think you could clarify, update or add
+            something? All my posts are available to{" "}
+            <a
+              href={`https://github.com/christopher-talke/talke-dev/tree/master/content/posts/${mdx.frontmatter.slug}.mdx`}
+            >
+              edit on Github
+            </a>
+            !
+          </div>
+        </div>
       </StyledBlogPost>
     </Layout>
   )
@@ -158,7 +172,7 @@ const StyledBlogPost = styled.div`
   }
 
   & #blog_meta_footer {
-    margin-top: 35px;
+    margin-top: 15px;
 
     p {
       margin: 0;
@@ -169,7 +183,27 @@ const StyledBlogPost = styled.div`
     }
   }
 
-  div.alert {
+  div.github-edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+      margin-left: 10px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      div {
+        margin-left: 0px;
+      }
+      svg {
+        display: none;
+      }
+    }
+  }
+
+  div.alert,
+  div.github-edit {
     position: relative;
     z-index: 50;
     border: 1px solid;
