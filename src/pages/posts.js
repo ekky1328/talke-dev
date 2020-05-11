@@ -3,18 +3,18 @@ import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { graphql } from "gatsby"
 import styled from "styled-components"
+
 import Layout from "../components/Layout"
+import Tags from "../components/Tags"
 
 export default props => {
-  console.log(props.data)
-
   const { mdx, previous, next } = props.data
-  const tags = mdx.frontmatter.tags.split(",")
+
   return (
     <Layout title={mdx.frontmatter.title} blog blogMenu={{ previous, next }}>
       <StyledBlogPost>
         <h1>{mdx.frontmatter.title}</h1>
-        <h6>{mdx.frontmatter.subtitle}</h6>
+        <h6 dangerouslySetInnerHTML={{ __html: mdx.frontmatter.subtitle }} />
         <p id="blog_meta_header">
           <strong>Published</strong> {mdx.frontmatter.date}
         </p>
@@ -31,13 +31,7 @@ export default props => {
             Christopher Talke
           </p>
           <strong>Topics</strong>
-          {tags.map((tag, key) => (
-            <>
-              {key === tags.length - 1 ? ` and ` : ""}
-              {tag}
-              {key < tags.length - 2 ? `, ` : ""}
-            </>
-          ))}
+          <Tags tags={mdx.frontmatter.tags} />
         </p>
       </StyledBlogPost>
     </Layout>
@@ -96,7 +90,12 @@ const StyledBlogPost = styled.div`
   }
 
   h4 {
+    margin-top: 45px;
     margin-bottom: 5px;
+  }
+
+  h4:nth-of-type(1) {
+    margin-top: 25px;
   }
 
   h4 + p {
@@ -114,9 +113,12 @@ const StyledBlogPost = styled.div`
     border-top: 1px solid rgba(0, 67, 116, 0.35);
   }
 
-  & img {
+  img {
     max-width: 100%;
     height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
   }
 
   .blog-tag {
@@ -132,8 +134,23 @@ const StyledBlogPost = styled.div`
     transform: scale(1.05);
   }
 
-  code.grvsc-code {
+  pre code.grvsc-code {
     white-space: pre-wrap;
+  }
+
+  .grvsc-line-highlighted {
+    background: #ecf6ff;
+    border-left: 7px solid #82c5ff;
+    padding-left: calc(24px - 7px);
+  }
+
+  ul code,
+  p code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
   }
 
   .twitter-tweet {
@@ -149,6 +166,33 @@ const StyledBlogPost = styled.div`
 
     strong {
       margin-right: 15px;
+    }
+  }
+
+  div.alert {
+    position: relative;
+    z-index: 50;
+    border: 1px solid;
+    border-left: 7.5px solid;
+    padding: 5px 7.5px;
+    margin: 30px 0;
+
+    &.info {
+      border-color: #82c5ff;
+      background: #ecf6ff;
+      color: #0082f7;
+    }
+
+    &.warning {
+      border-color: #fff682;
+      background: #fffcec;
+      color: #a9a522;
+    }
+
+    &.danger {
+      border-color: #ff8282;
+      background: #ffecec;
+      color: #f70000;
     }
   }
 `

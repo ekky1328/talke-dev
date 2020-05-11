@@ -2,6 +2,8 @@ import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 
+import Tags from "../components/Tags"
+
 const BlogPostCard = ({ node: { frontmatter } }) => {
   return (
     <>
@@ -11,11 +13,16 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
             <h2>{frontmatter.title}</h2>
           </Link>
         </div>
-        <div className="subtitle">{frontmatter.subtitle}</div>
+        <div
+          className="subtitle"
+          dangerouslySetInnerHTML={{ __html: frontmatter.subtitle }}
+        />{" "}
         <div className="meta">
           <div className="topics">
             <strong>Topics </strong>
-            <span>{frontmatter.tags}</span>
+            <span>
+              <Tags tags={frontmatter.tags} />
+            </span>
           </div>
           <div className="publishDate">
             <strong>Date </strong>

@@ -126,6 +126,12 @@ const GlobalStyle = createGlobalStyle`
 
   }
 
+  @media only screen and (max-width: 600px) { 
+    .blog-menu {
+      padding: 0 20px;
+    }
+  }
+
   a {
     color: var(--secondary-colour);
     transition: color 100ms;

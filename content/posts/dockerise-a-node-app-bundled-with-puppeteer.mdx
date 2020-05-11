@@ -81,7 +81,7 @@ npm run start
 Deployment to a Docker Image
 Now please understand that this was a huge headache for me, and my motivation behind writing this is too hopefully make another persons life MUCH easier.
 
-In the production, I actually utilised the NodeJS-Alpine Docker Image to save disk space, and I may address deployments with this at a later date as it takes more work, but for the sake of simplicity, I will show you how I initially used the default NodeJS Docker Image.
+In the production, I actually utilise the NodeJS-Alpine Docker Image to save disk space, and I may address deployments with this at a later date as it takes more work, but for the sake of simplicity, I will show you how I initially used the default NodeJS Docker Image.
 
 First I made a Dockerfile in the root of my project, I’ve included an example below which was sourced from the puppeteer docs, however, this was modified to work with my app.
 
@@ -142,7 +142,7 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_a
 RUN chmod +x /usr/local/bin/dumb-init
 ```
 
-This section downloads and installs dumb-init which is a small process handler written in C that is recommened to be used within our docker image, in short this will ensure that there are no zombie instances/processes of chrome (or other processes you are targeting) from running if your script fails to close a target instance/process (just imagine having 1000s of dead chrome tabs running, eventually you will run out of resources without this!)
+This section downloads and installs dumb-init which is a small process handler written in C that is recommended to be used within our docker image, in short this will ensure that there are no zombie instances/processes of chrome (or other processes you are targeting) from running if your script fails to close a target instance/process (just imagine having 1000s of dead chrome tabs running, eventually you will run out of resources without this!)
 
 ```dockerfile
 WORKDIR /app

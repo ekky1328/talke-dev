@@ -22,8 +22,12 @@ module.exports = {
             resolve: `gatsby-remark-vscode`,
             options: {
               theme: "Light (Visual Studio)",
-              injectStyles: true,
+              inlineCode: {
+                marker: "•",
+                className: "inline-code",
+              },
               logLevel: "error",
+              injectStyles: true,
             },
           },
         ],
