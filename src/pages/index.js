@@ -121,7 +121,7 @@ const Index = styled.div`
   div.home-page {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr auto auto auto auto;
+    grid-template-rows: 100px 25px auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 

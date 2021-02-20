@@ -21,7 +21,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               publish
             }
             body
-            timeToRead
           }
         }
       }
@@ -31,6 +30,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   if (result.errors) {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
+
+  console.log(result.data)
 
   const posts = result.data.allMdx.edges
 
