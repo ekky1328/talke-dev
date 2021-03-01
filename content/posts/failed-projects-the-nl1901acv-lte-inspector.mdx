@@ -1,0 +1,141 @@
+---
+title: Failed Projects - The NL1901ACV LTE Inspector
+subtitle: This is a flashback to one of my failed side projects, the NL1901ACV LTE Inspector. I go over why I made it, the research that went into it, what I built it with, how I built it, why it failed, what I learnt and if it worked.
+slug: failed-projects-the-nl1901acv-lte-inspector
+tags: Failed Projects, JavaScript, Networking
+date: 2021-03-01
+publish: true
+id: 6
+---
+<div className="alert info">
+Failed Projects is a series I'm going to start writing about every few months.
+
+The plan is to highlight that technical people (such as myself) are notorious for having grand ideas and never finishing them. 
+
+There is a lot of lost gold amongst failed projects, a lot of learnings that frankly I don't want going to waste! 
+</div>
+
+So here we go, the first one I want to revisit is the <a href="https://github.com/christopher-talke/nl1901acv-lte-inspector">NL1901ACV LTE Inspector</a> with my last commit being on the 21st April 2020.
+
+<img src="/nl1901acv-lte-inspector-commits.png" alt="A graph showing the lack of commits for this project" />
+
+<br/>
+
+**Where is the code?**
+Here 👉 <a href="https://github.com/christopher-talke/nl1901acv-lte-inspector">NL1901ACV LTE Inspector</a>
+
+<br/>
+
+**Why did I make this?**<br/>
+I made this to give myself clear readings of the LTE Signal from my "consumer" router.
+
+<br/>
+
+**What is the background story of this project?**<br/>
+You see, when you live in rural Australia sometimes the only available internet is Satellite NBN, most people will turn towards using LTE Services instead as the latency with Satellite NBN is unbearable (more on that in the future).
+
+At the time I was using a <a href="https://www.casa-systems.com/products/nl1901acv/">NL1901ACV</a> which was shipped to me by Spintel (a really 💩💩💩 telco) which contains an <a href="https://www.quectel.com/product/ec25.htm">Quectel EC-25</a> LTE CAT 4 Module to do all of its communication with the Australian LTE network.
+
+The main problem I had was that the router readings were absolutely garbage, there was no way you could tell what the best location was to install this device by just referring to the built-in readings. I needed access to things such as RSRP, RSRQ, RSSI and SINR, and this 🐕💩‍ interface wouldn't satisfy that need (see below).
+
+<img src="/nl1901acv-lte-inspector-router-readings.png" alt="A preview screenshot of the NL1901ACV built-in readings which were garbage" />
+
+<br/>
+
+**The part where I did the research**<br/>
+I first started by figuring out how I could connect to my router, and after doing some meticulous research I found that I would be able to access my router with SSH, at a minimum you needed the following details to connect:
+
+- Username: `admin` (default)
+- Password: `admin` (default - psstt this should be changed)
+- HMAC: `hmac-sha`
+- Cipher: `3dex-cbc`
+- Kex: `diffie-hellman-group1-sha1`
+
+Once I was in, I found that I could use a utility that was baked into the Netcomm firmware "busybox" called `3g-mngr`, and with this you could issue what are called `AT Commands` directly to the built-in LTE Module (Quectel EC-25) by using  `3g-mngr chat <insert-at-command-here>`. 
+
+After some more search I found that the following commands are what I needed to get the desired information:
+
+- `AT+QCSQ`, This is used to query and report the signal strength of the current service network.
+- `AT+QENG="servingcell"`, The command is designed to report the information of serving cells, neighbour cells and Packet Switch parameters. This was one of my favorite commands as it gave readings from the tower I was connected from.
+- `AT+QNWINFO`, The command indicates network information such as access technology selected, the operator and the band selected.
+- `AT+CSQ`, AT command returns the signal strength of the device.
+
+Each of these commands returned what almost resembled an Array or List, and I just needed to write a function to convert it into something readable. An example of this can be found below!
+
+```sh
+$ 3g-mngr chat AT+QCSQ
+
+AT+QCSQ LTE,53,-78,202,-8
+
+$
+```
+
+The output would usually be constructed with the command you issued, in this case  `AT+QCSQ` and then followed by the actual reported values `LTE,53,-78,202,-8`. When compared to the output tables found in the various Quectel AT Command booklets, you could figure out what each individual value mapped too.
+
+To help make this easier on myself and others, I wrote a Quectel Mapping table in a `.json` format after reading through all of the documentation for the listed commands (Link Here: <a href="https://github.com/christopher-talke/nl1901acv-lte-inspector/blob/master/app/src/quectel-mappings.json">quectel-mappings.json</a>)
+
+So based of the above information, I now had the following:
+
+<span style="padding-left: 15px;">✔  A programmatic way to connect to my router via SSH.</span><br/>
+<span style="padding-left: 15px;">✔ Commands to issue against my router.</span><br/>
+<span style="padding-left: 15px;">✔ A mapping table to compare the output against.</span>
+
+Now I just needed to start building the app!
+
+<br/>
+
+**What did I build it with, and what did it look like?**<br/>
+I decided to use <a href="https://www.electronjs.org/">ElectronJS</a> for this project as I wanted to build something that didn't require a server, and could be installed on any desktop platform (Windows, Mac or Linux).
+
+- For the frontend, I decided to utilise ReactJS.
+- For the backend, well... ElectronJS with ssh2shell to do all my SSH'ing
+
+There wasn't much to the app really, just a frontend that would display the data, and a backend that would issue my commands on a regular interval.
+
+As for the looks... I'm going to be honest, it wasn't pretty! 
+
+It was actually inspired by the Native Windows Ookla's Speedtest app, however, it didn't quite get there design wise.
+
+As you'll see the data I was able to get from the router was MUCH better then the information I was able to get from the native router firmware.
+
+<img src="/nl1901acv-lte-inspector.png" alt="A preview screenshot of the NL1901ACV LTE Inspector" />
+
+<br/>
+
+
+**Why did this project fail?**<br/>
+Well this project ultimately failed because the hardware I was using failed. 
+
+The Netcomm NL1901ACV was actually located on top of a shelf on the veranda as this was the best location for a signal, however, during a very heavy storm the wind pushed the router off the shelf and destroyed it.
+
+I ended up replacing this router with a better device, a Huawei B525 Router that had a much better built in interface for signal strength which negated the need for me to continue working on this tool.
+
+Looking at my notes I only needed to finish the following:
+
+- Restyle the application to match the Ookla application.
+- Add SQLite for data persistence, and user configuration.
+- Add logic to switch from automatic polling to manual polling.
+- Add a custom AT Chat screen to input other AT Commands.
+
+Anyway, the failure of the Netcomm NL1901ACV was the end of an era... 😅
+
+<br/>
+
+**What did I learn, and most importantly did it work?**<br/>
+To be honest, this project taught me a lot because I ran into a ton of roadblocks. I really wished that I kept going with this project by buying an exact replacement router, however, the better router ultimately helped me move on with my life.
+
+In the end here is a summary of what I learnt by tackling this project:
+
+<span style="padding-left: 15px;">✔  I learned a bit about the SSH Protocol, and encryption algorithms.</span><br/>
+<span style="padding-left: 15px;">✔  I learned about the Busybox firmware, and it's utilities.</span><br/>
+<span style="padding-left: 15px;">✔  I learned about the complexities of ElectronJS.</span><br/>
+<span style="padding-left: 15px;">✔  I learned a ton about LTE technologies.</span><br/>
+<span style="padding-left: 15px;">✔  I learned how to write mapping tables with JSON.</span><br/>
+
+The point is, even though this project "failed" I was forced to learn a lot. ultimately these things may not help me immediately, however, there will always be an edge case in the future where this project will end up saving my 🥓 in the future.
+
+To answer that last question, yes, this project worked.
+
+I was able to get the readings I needed to establish a solid signal 📶 with my LTE Service.
+
+Guess it wasn't a failed project after all.

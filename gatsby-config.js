@@ -29,7 +29,7 @@ module.exports = {
               logLevel: "error",
               injectStyles: true,
             },
-          },
+          }
         ],
       },
     },

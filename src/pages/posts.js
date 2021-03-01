@@ -90,6 +90,7 @@ const StyledBlogPost = styled.div`
 
   & article {
     line-height: 1.5;
+    font-size: 1rem;
   }
 
   @media only screen and (max-width: 600px) {
@@ -219,6 +220,10 @@ const StyledBlogPost = styled.div`
     border-left: 7.5px solid;
     padding: 5px 7.5px;
     margin: 30px 0;
+
+    p {
+      margin-bottom: 0;
+    }
 
     &.info {
       border-color: #82c5ff;
