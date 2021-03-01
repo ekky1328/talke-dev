@@ -16,10 +16,10 @@ export default ({ data }) => {
           <div className="blurb">
             <p>
               I'm an IT Professional based in Coffs Harbour, New South Wales
-              with an uncanny love for web development.
+              with a love for web dev and tech in general.
             </p>
             <p>
-              I've always used some type of technology to solve problems in my
+              I've always used technology to solve problems in my
               life, and this is my place to share my findings and learnings.
               Hopefully in the process of sharing knowledge I can help others
               who are learning, or seeking answers to problems I may have
@@ -27,23 +27,22 @@ export default ({ data }) => {
             </p>
             <p>
               This blog will typically cover anything to do with web
-              development, linux server things or janky networking stuff. I'm
+              dev, windows/linux server things or janky networking stuff! I'm
               not going to limit this blog, but it is mostly going to be based
               around tech!
             </p>
             <p>
-              Just keep in mind I'm not an expert in many things, I learn enough
+              Just keep in mind I'm not an expert, I learn enough
               to solve problems and I hope you can find value in that.
             </p>
             <p>
               If you have any questions or just want to chat, feel free to{" "}
               <a
-                href={`mailto:info@christopher-talke.dev?Subject="Hi!"`}
+                href={`mailto:chris@talke.dev?Subject="Hi!"`}
                 target="_top"
               >
                 get in touch
-              </a>{" "}
-              or check out my{" "}
+              </a>, check out my{" "}
               <a
                 href="https://github.com/christopher-talke"
                 target="_blank"

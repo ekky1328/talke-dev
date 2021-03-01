@@ -31,8 +31,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
   }
 
-  console.log(result.data)
-
   const posts = result.data.allMdx.edges
 
   posts.forEach(({ node }, index) => {
