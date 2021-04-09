@@ -5,44 +5,42 @@ import Layout from "../components/Layout"
 
 import BlogPostCard from "../components/BlogPostCard"
 
-export default ({ data }) => {
+const Index = ({ data }) => {
   const posts = data.allMdx.edges
   return (
     <Layout>
-      <Index>
+      <StyledIndex>
         <div className="home-page">
           <h1>G'day, I'm Chris Talke.</h1>
           <h6>Welcome to my corner of the internet.</h6>
           <div className="blurb">
             <p>
-              I'm an IT Professional based in Coffs Harbour, New South Wales
-              with a love for web dev and tech in general.
+              I'm an IT Professional based in Australia{" "}
+              <span role="img">🦘</span> with a love for web dev and tech in
+              general.
             </p>
             <p>
-              I've always used technology to solve problems in my
-              life, and this is my place to share my findings and learnings.
-              Hopefully in the process of sharing knowledge I can help others
-              who are learning, or seeking answers to problems I may have
-              solved.
+              I've always used technology to solve problems in my life, and this
+              is my place to share my findings and learnings. Hopefully in the
+              process of sharing knowledge I can help others who are learning,
+              or seeking answers to problems I may have solved.
             </p>
             <p>
-              This blog will typically cover anything to do with web
-              dev, windows/linux server things or janky networking stuff! I'm
-              not going to limit this blog, but it is mostly going to be based
+              This blog will typically cover anything to do with web dev,
+              windows/linux server things or janky networking stuff! I'm not
+              going to limit this blog, but it is mostly going to be based
               around tech!
             </p>
             <p>
-              Just keep in mind I'm not an expert, I learn enough
-              to solve problems and I hope you can find value in that.
+              Just keep in mind I'm not an expert, I learn enough to solve
+              problems and I hope you can find value in that.
             </p>
             <p>
               If you have any questions or just want to chat, feel free to{" "}
-              <a
-                href={`mailto:chris@talke.dev?Subject="Hi!"`}
-                target="_top"
-              >
+              <a href={`mailto:chris@talke.dev?Subject="Hi!"`} target="_top">
                 get in touch
-              </a>, check out my{" "}
+              </a>
+              , check out my{" "}
               <a
                 href="https://github.com/christopher-talke"
                 target="_blank"
@@ -76,7 +74,7 @@ export default ({ data }) => {
             <BlogPostCard {...post} />
           ))}
         </div>
-      </Index>
+      </StyledIndex>
     </Layout>
   )
 }
@@ -103,7 +101,7 @@ export const query = graphql`
   }
 `
 
-const Index = styled.div`
+const StyledIndex = styled.div`
   max-width: 960px;
   padding-top: 100px;
   margin: 0 auto;
@@ -158,6 +156,7 @@ const Index = styled.div`
       line-height: 150%;
       grid-column: 1/5;
       grid-row: 3/4;
+      font-size: 16px;
     }
 
     & hr {
@@ -185,7 +184,7 @@ const Index = styled.div`
       opacity: 0.35;
       position: absolute;
       top: 200px;
-      left: -20px;
+      left: -12px;
       z-index: 25;
     }
 
@@ -197,8 +196,8 @@ const Index = styled.div`
       opacity: 0.35;
       background: white;
       transform: rotate(-90deg);
-      top: 50px;
-      left: -100px;
+      top: 75px;
+      left: -87.5px;
     }
 
     @media only screen and (max-width: 600px) {
@@ -217,3 +216,5 @@ const Index = styled.div`
     }
   }
 `
+
+export default Index

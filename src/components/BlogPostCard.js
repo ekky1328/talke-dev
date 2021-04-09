@@ -18,15 +18,13 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
           dangerouslySetInnerHTML={{ __html: frontmatter.subtitle }}
         />{" "}
         <div className="meta">
+          <div className="publishDate">
+            <span>{frontmatter.date}</span>
+          </div>
           <div className="topics">
-            <strong>Topics </strong>
             <span>
               <Tags tags={frontmatter.tags} />
             </span>
-          </div>
-          <div className="publishDate">
-            <strong>Date </strong>
-            <span>{frontmatter.date}</span>
           </div>
         </div>
       </StyledBlogPostCard>
@@ -49,6 +47,11 @@ const StyledBlogPostCard = styled.div`
     margin: 0;
   }
 
+  & a {
+    color: var(--main-colour);
+    text-decoration: none;
+  }
+
   & .blog-meta {
     display: flex;
     justify-content: space-between;
@@ -65,12 +68,14 @@ const StyledBlogPostCard = styled.div`
 
   & .subtitle {
     margin-top: 5px;
+    font-size: 16px;
   }
 
   & .meta {
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
+    opacity: 0.65;
   }
 
   & h2 {

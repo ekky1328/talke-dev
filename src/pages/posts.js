@@ -8,7 +8,7 @@ import Layout from "../components/Layout"
 import Tags from "../components/Tags"
 import Github from "../components/Github"
 
-export default props => {
+const Posts = props => {
   const { mdx, previous, next } = props.data
 
   return (
@@ -89,8 +89,8 @@ const StyledBlogPost = styled.div`
   margin: 70px auto 50px auto;
 
   & article {
-    line-height: 1.5;
-    font-size: 1rem;
+    line-height: 1.6;
+    font-size: 16px;
   }
 
   @media only screen and (max-width: 600px) {
@@ -190,6 +190,7 @@ const StyledBlogPost = styled.div`
 
     strong {
       margin-right: 15px;
+      min-width: 25px;
     }
   }
 
@@ -244,3 +245,5 @@ const StyledBlogPost = styled.div`
     }
   }
 `
+
+export default Posts

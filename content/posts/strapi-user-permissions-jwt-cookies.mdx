@@ -5,7 +5,7 @@ slug: strapi-user-permissions-jwt-cookies
 tags: Strapi.js,Cookies
 date: 2020-05-11 
 publish: true
-id: 3
+id: 2
 ---
 
 This post won't explain what Strapi is, how it works, or even when you should use it. If you are after that type of information, just see any of the below links...
@@ -28,7 +28,7 @@ This post will instead explain how to modify the included plugin `strapi-plugin-
 </div>
 
 
-#### 🔧 Setup
+## 🔧 Setup
 Before you start you'll need to import some files into your project from the Strapi `master` branch that relate to the `strapi-plugin-users-permissions` plugin, see this link for the specific package: <a href="https://github.com/strapi/strapi/tree/master/packages/strapi-plugin-users-permissions">Strapi Plugin User Permissions source</a>.
 
 - Copy the code from <a href="https://raw.githubusercontent.com/strapi/strapi/master/packages/strapi-plugin-users-permissions/controllers/Auth.js">../controllers/Auth.js</a> to this location in your project `/extensions/user-permissions/controllers/Auth.js`.
@@ -51,7 +51,7 @@ If you want to understand why we are doing this, please reference Strapi's docum
 </div>
 
 
-#### 🥇 Modify 'Auth' Handler
+## 🥇 Modify 'Auth' Handler
 First we need to ensure that when you hit the normal `auth/local` endpoint, that the JSON Web Token (JWT) is issued via a cookie rather then be included in the body of the http response.
 
 To do this you will need to modify the `Auth.js` file we imported earlier, first you'll need to find this code within the `callback()` method, and change it from this:
@@ -100,7 +100,7 @@ Great - with that change you can test your `auth/local` route with a tool like P
 Now you just need to be able to make authenticated requests to Strapi, if you try to make a request to a protected route right now, even with a cookie, it will not work. In order to fix this we need to modify the other file we imported earlier to include the cookie in the authentication business logic.
 
 
-#### 🥈 Modify 'Permissions' Config Policy
+## 🥈 Modify 'Permissions' Config Policy
 Open the `permissions.js` file we imported earlier, and add the following code the top of the function in this file. 
 
 Your code will go from looking like this:
@@ -136,7 +136,7 @@ The above change will do the following:
 Now you'll be able to `authenticate` and continue to make requests to protected api routes using your new secure httpOnly cookie! Now the only problem you have is that you can't logout, or kill the cookie... yet.
 
 
-#### 🥉 Custom 'Logout' Router and Handler
+## 🥉 Custom 'Logout' Router and Handler
 Before we start on this section, I just want to say that there **may** be better ways to do this, however, this is how I solved this problem.
 
 First go to your `api` folder in your project, and create a folder called `custom` and inside of this directory create the following folders `config` and `controllers`.
@@ -178,10 +178,10 @@ module.exports = {
 
 With that you'll now have a completely functional authentication process in Strapi, and you won't need to manually store your JWT in client side storage when you are making requests from your frontend!
 
-#### 💜 Credit
+## 💜 Credit
 While doing research on how to achieve this, I came across this <a href="https://github.com/strapi/strapi/discussions/4632">Github Issue</a>. Within this issue, you will find a reply from a user called `sanojsilva` where I pulled the idea / logic from, however, there was no clear documentation on how this is achieved. Thanks for the pointer `sanojsilva` and I hope this helps someone who is trying to figure this out.
 
-#### 🤔 Frequently Asked Questions
+## 🤔 Frequently Asked Questions
 Since I had originally published this blog post it has picked up some traction, either due to the link I left in a Github Issue, or due to someone I look up (with a big following, aka Wes Boss) taking notice of it and sharing it.
 
 Either way, a few people have asked me repeat questions, so I thought I'd add them here for others that are trying to resolve this issue.

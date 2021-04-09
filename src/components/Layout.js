@@ -68,8 +68,7 @@ const Layout = ({
 
 const GlobalStyle = createGlobalStyle`
 
-  @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:400,700,900&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Cousine:400,700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap');
 
   :root {
     --text-size: 14px;
@@ -83,7 +82,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'Cousine', monospace;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: var(--text-size);
     background-color: #fff;
     color: var(--secondary-colour);
@@ -147,7 +146,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-family: 'Libre Franklin', sans-serif;
     font-style: normal;
     font-weight: 800;
     font-size: 54px;
@@ -157,10 +155,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h6 {
-    font-family: 'Cousine', monospace;
     font-style: normal;
     font-weight: normal;
-    font-size: 17px;
+    font-size: 21px;
     margin: 5px 0;
     padding: 0;
   }

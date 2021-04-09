@@ -5,7 +5,7 @@ slug: failed-projects-the-nl1901acv-lte-inspector
 tags: Failed Projects, JavaScript, Networking
 date: 2021-03-01
 publish: true
-id: 6
+id: 5
 ---
 <div className="alert info">
 Failed Projects is a series I'm going to start writing about every few months.
@@ -19,19 +19,13 @@ So here we go, the first one I want to revisit is the <a href="https://github.co
 
 <img src="/nl1901acv-lte-inspector-commits.png" alt="A graph showing the lack of commits for this project" />
 
-<br/>
-
-**Where is the code?**
+## Where is the code?
 Here 👉 <a href="https://github.com/christopher-talke/nl1901acv-lte-inspector">NL1901ACV LTE Inspector</a>
 
-<br/>
-
-**Why did I make this?**<br/>
+## Why did I make this?
 I made this to give myself clear readings of the LTE Signal from my "consumer" router.
 
-<br/>
-
-**What is the background story of this project?**<br/>
+## What is the background story of this project?
 You see, when you live in rural Australia sometimes the only available internet is Satellite NBN, most people will turn towards using LTE Services instead as the latency with Satellite NBN is unbearable (more on that in the future).
 
 At the time I was using a <a href="https://www.casa-systems.com/products/nl1901acv/">NL1901ACV</a> which was shipped to me by Spintel (a really 💩💩💩 telco) which contains an <a href="https://www.quectel.com/product/ec25.htm">Quectel EC-25</a> LTE CAT 4 Module to do all of its communication with the Australian LTE network.
@@ -40,9 +34,7 @@ The main problem I had was that the router readings were absolutely garbage, the
 
 <img src="/nl1901acv-lte-inspector-router-readings.png" alt="A preview screenshot of the NL1901ACV built-in readings which were garbage" />
 
-<br/>
-
-**The part where I did the research**<br/>
+## The part where I did the research
 I first started by figuring out how I could connect to my router, and after doing some meticulous research I found that I would be able to access my router with SSH, at a minimum you needed the following details to connect:
 
 - Username: `admin` (default)
@@ -82,9 +74,7 @@ So based of the above information, I now had the following:
 
 Now I just needed to start building the app!
 
-<br/>
-
-**What did I build it with, and what did it look like?**<br/>
+## What did I build it with, and what did it look like?
 I decided to use <a href="https://www.electronjs.org/">ElectronJS</a> for this project as I wanted to build something that didn't require a server, and could be installed on any desktop platform (Windows, Mac or Linux).
 
 - For the frontend, I decided to utilise ReactJS.
@@ -100,10 +90,7 @@ As you'll see the data I was able to get from the router was MUCH better then th
 
 <img src="/nl1901acv-lte-inspector.png" alt="A preview screenshot of the NL1901ACV LTE Inspector" />
 
-<br/>
-
-
-**Why did this project fail?**<br/>
+## Why did this project fail?
 Well this project ultimately failed because the hardware I was using failed. 
 
 The Netcomm NL1901ACV was actually located on top of a shelf on the veranda as this was the best location for a signal, however, during a very heavy storm the wind pushed the router off the shelf and destroyed it.
@@ -119,9 +106,7 @@ Looking at my notes I only needed to finish the following:
 
 Anyway, the failure of the Netcomm NL1901ACV was the end of an era... 😅
 
-<br/>
-
-**What did I learn, and most importantly did it work?**<br/>
+## What did I learn, and most importantly did it work?
 To be honest, this project taught me a lot because I ran into a ton of roadblocks. I really wished that I kept going with this project by buying an exact replacement router, however, the better router ultimately helped me move on with my life.
 
 In the end here is a summary of what I learnt by tackling this project:

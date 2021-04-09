@@ -1,11 +1,11 @@
 ---
 title: How to disable Microsoft Teams Auto Start via Group Policy Object (GPO)
-subtitle: Microsoft please, please, please, we beg you! Release an ADMX for Microsoft Teams that works! No? Okay, let me show you how I got Microsoft Teams to stop auto-starting. 
+subtitle: Microsoft please, please, please, we beg you! Release an ADMX for Microsoft Teams that works! No? Okay, let me show you how I got Microsoft Teams to stop auto-starting.
 slug: disable-microsoft-teams-auto-start-with-gpo
 tags: Microsoft Teams,Windows Server
 date: 2021-02-20
 publish: true
-id: 5
+id: 4
 ---
 
 > Hi, It's been a while since I've posted something here, but I've just figured this thing out after doing some research and there wasn't a lot of information out there. So here we go...
@@ -14,12 +14,9 @@ If you've ever pushed out Microsoft Teams to your domain joined machines you mig
 
 Especially low-end devices, and don't even get me started on Remote Desktop Session Hosts (RDSHs) such as Windows Server 2019 or Windows Virtual Desktop (WVD).
 
-<img
-  alt="Microsoft Teams Meme"
-  src="/teams-meme.png"
-/>
+<img alt="Microsoft Teams Meme" src="/teams-meme.png" />
 
-So what do you do? Do you turn to the auto-start ADMX? No you cannot, because it doesn't work as intended. You see... the ADMX Microsoft released only works BEFORE the end-user first launches Microsoft Teams. Once the configuration has been written to the registry and the `desktop-config.json` there is only one thing left to do. 
+So what do you do? Do you turn to the auto-start ADMX? No you cannot, because it doesn't work as intended. You see... the ADMX Microsoft released only works BEFORE the end-user first launches Microsoft Teams. Once the configuration has been written to the registry and the `desktop-config.json` there is only one thing left to do.
 
 Turn to trusty ol powershell, lucky us a bloke by the name of `Chenry Lee` found a workaround, he does not give attribution to the bloke who wrote it but overall once you read the script its pretty straight forward and non-complex (see below).
 
@@ -46,7 +43,7 @@ else {
 $configs | Set-Content $Teams_config_file
 ```
 
-Anyway, give this a try! 
+Anyway, give this a try!
 
 Create your logon script group policy, drop that script into a directory that can be accessed by anyone on your domain, link your script to the GPO and save it. Add your WMI filter to your new GPO, link your OUs and enable it.
 
