@@ -16,8 +16,10 @@ const Index = ({ data }) => {
           <div className="blurb">
             <p>
               I'm an IT Professional based in Australia{" "}
-              <span role="img">🦘</span> with a love for web dev and tech in
-              general.
+              <span role="img" aria-label="kangaroo">
+                🦘
+              </span>{" "}
+              with a love for web dev and tech in general.
             </p>
             <p>
               I've always used technology to solve problems in my life, and this

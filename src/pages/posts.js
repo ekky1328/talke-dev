@@ -149,7 +149,6 @@ const StyledBlogPost = styled.div`
     margin: 30px 0;
     line-height: 1.4;
     transform: scale(1.05);
-    overflow: hidden;
   }
 
   @media only screen and (max-width: 600px) {
