@@ -95,7 +95,7 @@ const StyledBlogPost = styled.div`
 
   @media only screen and (max-width: 600px) {
     & {
-      max-width: 375px;
+      padding: 0 14px;
     }
   }
 

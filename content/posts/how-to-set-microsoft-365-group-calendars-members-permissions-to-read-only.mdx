@@ -1,0 +1,71 @@
+---
+title: How to set Microsoft 365 Group Calendar members permissions to read only
+subtitle: Just a short, straight to the answer powershell guide to set Microsoft 365 Group Calendar members to read only, meaning only Owners of the group can modify events.
+slug: how-to-set-microsoft-365-group-calendars-members-permissions-to-read-only
+tags: Microsoft 365, Exchange Online, Powershell
+date: 2021-04-23
+publish: true
+id: 6
+---
+
+### 🏃🏽‍♂️🏃🏽‍♀️ The Short Answer
+
+You're in a hurry aye? No dramas...
+
+This post assumes that you have already:
+
+- Connected to Microsoft 365 with the Powershell Module
+- AND connected to Exchange Online with the Powershell Module
+
+If you've completed these steps, then please go ahead and check out the below instructions.
+
+**✅ Turning on Read-Only**
+
+```ps
+Set-UnifiedGroup <Display Name> -CalendarMemberReadOnly
+```
+
+<div className="alert warning">
+  <strong>Please note</strong>
+  <br></br>
+  - That this will come back with a warning stating that the command completed
+    successfully but no settings of 'Display Name' have been modified.
+  <br></br>
+  - This is incorrect, the value actually has changed, and you can do this by
+    referring to the 'Checking the value' commmand listed in this post.
+</div>
+
+**⛔ Disabling Read-Only**
+
+```powershell
+Set-UnifiedGroup <Display Name> -CalendarMemberReadOnly:$false
+```
+
+<div className="alert warning">
+  <strong>Please note</strong>
+  <br></br>
+  - That this will come back with a warning stating that the command completed
+    successfully but no settings of 'Display Name' have been modified.
+  <br></br>
+  - This is incorrect, the value actually has changed, and you can do this by
+    referring to the 'Checking the value' commmand listed in this post.
+</div>
+
+**🔍 Checking The Read-Only Setting**
+
+```powershell
+Get-UnifiedGroup <Display Name> -IncludeAllProperties | Select-Object -Property CalendarMemberReadOnly
+```
+
+OR
+
+```powershell
+Get-UnifiedGroup <Display Name> -IncludeAllProperties | Format-List
+```
+
+### The Long Answer
+
+Reading the Microsoft Documentation... 😭 here are the relevant links that I used for this research:
+
+- [Set-UnifiedGroup](https://docs.microsoft.com/en-us/powershell/module/exchange/set-unifiedgroup?view=exchange-ps)
+- [Get-UnifiedGroup](https://docs.microsoft.com/en-us/powershell/module/exchange/get-unifiedgroup?view=exchange-ps)

@@ -105,16 +105,17 @@ export const query = graphql`
 
 const StyledIndex = styled.div`
   max-width: 960px;
-  padding-top: 100px;
+  padding: 100px 25px;
   margin: 0 auto;
   position: relative;
   display: grid;
   grid-template-columns: 375px 1fr;
   grid-column-gap: 35px;
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 780px) {
     grid-template-columns: 1fr;
     padding-top: 50px;
+    padding: 50px 0px;
   }
 
   div.home-page {
@@ -124,19 +125,20 @@ const StyledIndex = styled.div`
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 780px) {
       & {
         margin: 0 auto;
         margin-bottom: 25px;
-        padding: 0 20px;
+        grid-template-rows: auto auto auto;
+        padding: 0 23px;
       }
 
       & h1 {
-        font-size: 54px;
+        font-size: 50px;
       }
 
       & h6 {
-        font-size: 14px;
+        font-size: 18px;
         margin-bottom: 6px;
       }
     }
@@ -202,7 +204,7 @@ const StyledIndex = styled.div`
       left: -87.5px;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 780px) {
       &::after {
         display: none;
       }
