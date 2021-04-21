@@ -63,6 +63,16 @@ OR
 Get-UnifiedGroup <Display Name> -IncludeAllProperties | Format-List
 ```
 
+Here is an example if you want to enable the `CalendarMemberReadOnly` for a few groups at a time, this is using a hardcoded list of Display Names, however, you could easily combine the `-Filter` flag on the `Get-UnifiedGroup` module to dynamically create this list from a property.
+
+```powershell
+$groups = @("Group 1","Group 2","Group 3","Group 4")
+for ($i = 0; $i -lt $groups.Count; $i++) {
+    Set-UnifiedGroup $groups[$i] -CalendarMemberReadOnly
+    Get-UnifiedGroup $groups[$i] -IncludeAllProperties | Select-Object -Property CalendarMemberReadOnly
+}
+```
+
 ### The Long Answer
 
 Reading the Microsoft Documentation... 😭 here are the relevant links that I used for this research:
