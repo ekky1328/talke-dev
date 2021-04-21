@@ -7,6 +7,7 @@ const Layout = ({
   children,
   container,
   title,
+  subtitle,
   blog,
   blogMenu = { next: null, previous: null },
 }) => {
@@ -19,12 +20,22 @@ const Layout = ({
     return `${title} | Christopher Talke | Coffs Harbour based ICT Professional | talke.dev`
   }
 
+  console.log(subtitle)
+
+  function generateSubtitle(subtitle) {
+    if (subtitle === undefined) {
+      return "Christopher Talke is a Coffs Harbour based IT Professional, and this is his blog that will typically cover anything to do with web dev, windows/linux server things or janky networking stuff!"
+    }
+    return subtitle
+  }
+
   return (
     <>
       <GlobalStyle theme="light" blog={blog} />
       <Helmet>
         <meta charSet="utf-8" />
         <title>{generateTitle(title)}</title>
+        <meta name="description" content={generateSubtitle(subtitle)}></meta>
         <link rel="icon" type="image/png" href="/icon.png" sizes="16x16" />
       </Helmet>
       <div className="top-bar">

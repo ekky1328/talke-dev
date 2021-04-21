@@ -12,7 +12,11 @@ const Posts = props => {
   const { mdx, previous, next } = props.data
 
   return (
-    <Layout title={mdx.frontmatter.title} blog blogMenu={{ previous, next }}>
+    <Layout
+      title={mdx.frontmatter.title}
+      subtitle={mdx.frontmatter.subtitle}
+      blogMenu={{ previous, next }}
+    >
       <StyledBlogPost>
         <h1>{mdx.frontmatter.title}</h1>
         <h6 dangerouslySetInnerHTML={{ __html: mdx.frontmatter.subtitle }} />
