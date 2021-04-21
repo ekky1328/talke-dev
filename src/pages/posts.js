@@ -16,6 +16,7 @@ const Posts = props => {
       title={mdx.frontmatter.title}
       subtitle={mdx.frontmatter.subtitle}
       blogMenu={{ previous, next }}
+      blog
     >
       <StyledBlogPost>
         <h1>{mdx.frontmatter.title}</h1>
