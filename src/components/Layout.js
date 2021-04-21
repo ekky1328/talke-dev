@@ -14,9 +14,9 @@ const Layout = ({
 
   function generateTitle(title) {
     if (title === undefined) {
-      return "talke.dev"
+      return "Christopher Talke | Coffs Harbour based ICT Professional | talke.dev"
     }
-    return `${title} | talke.dev`
+    return `${title} | Christopher Talke | Coffs Harbour based ICT Professional | talke.dev`
   }
 
   return (
