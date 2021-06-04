@@ -1,0 +1,75 @@
+---
+title: How to enable Caller ID forwarding in 3CX
+subtitle: There have been a few scenarios where an end user might want to show the 'original' callers id when transferring or forwarding calls to an external part, this is a short guide on how to achieve this.
+slug: how-to-enable-caller-id-forwarding-in-3cx
+tags: 3CX, Caller ID, Telephony
+date: 2021-06-04
+publish: true
+id: 7
+---
+
+Some use cases for this would be because:
+
+- The end user wishes to divert calls to a sales person after hours, and retain the original callers number.
+- The end user wishes to divert calls to personal mobile number when in Do Not Disturb, Lunch Break or other preferred status.
+- Some other ungodly reason...
+
+<div className="alert warning">
+⚠ Be Aware
+
+This method is O.K. to use when the SIP Trunk provider does not require the <strong>AuthID</strong> parameter set for <strong>From : Display Name, From : User Part, Remote Part ID - Calling Party : Display Name</strong> or <strong>Remote Part ID - Calling Party : User Part</strong> in the <strong>SIP Trunk > Outbound Parameters</strong> settings.
+
+This will also utilise 2 SIP Channels in the process (one for the inbound call, one for the outbound call), preferred method is the Mobile App.
+</div>
+
+In testing this there was a total of four (4) scenarios executed:
+
+<strong>Scenario 1 - Forward External Call to External Number</strong> ✔️ Worked as expected
+
+1. Party 1 called from Mobile Number to Demo Phone System
+2. Party 2 transferred the call to a Mobile Number
+3. Mobile Phone displayed Party 1 as the Caller ID
+
+
+<strong>Scenario 2 - Do Not Disturb settings with forward to an External Number</strong> ✔️ Worked as expected
+
+1. Party 1 setup a DnD Configuration to forward calls to an External Number, and set himself as DnD
+2. Party 2 called from the Phone System to another Phone System
+3. Party 2 answered the call, and transferred the number to Party 1's Extension, which forwarded the call to Party 1s Mobile
+4. Party 1 recieved the call with a Caller ID presenting to him
+
+
+<strong>Scenario 3 - After Hours settings with forward to an External Number</strong> ✔️ Worked as expected
+
+1. Party 2 configured After-Hours settings to forward calls to an External Number
+2. Party 2 called from another Phone System to Demo Phone System
+3. Demo Phone System automatically forwarded the call to the Configured External Number
+4. Party 2 recieved the call with a Caller ID presenting to him
+
+
+<strong>Scenario 4 - Passing External Call to Internal Extension then Forward to External Number</strong> 🚩 Worked as 'expected', but didn't pass on the Original Callers ID
+
+1. Party 1 called the Demo Phone System from his mobile
+2. Party 1 answered the call, and transferred it to Party 2' Extension
+3. Party 2 answered the call, and transferred it to External Number (Mobile)
+4. Party 2 recieved the call with a Caller ID presenting to him (This happened because 3CX reconigsed the Original Caller ID being the internal extension's, not the original caller).
+
+### 🔧 Configuration steps
+
+<div className="alert danger">
+‼ Please Ensure
+
+There is a current backup available in the event you have to roll settings back!!!!
+</div>
+
+
+1. Log into the Management Console (https://client.3cx.com.au/)
+2. Go to 'SIP Trunk'
+3. Go to 'Outbound Parameters'
+4. Change 'Remote Party ID' from 'OutboundCallerId' to 'OriginatorCallerID'
+5. Scroll back up and click OK. **Note this will force a refresh of the SIP trunk registration which will drop all active calls**
+6. Done
+
+Suggest setting up a temporary DnD rule, or testing the after-hours forwarding rule to see if it has applied correctly.
+
+If you need any help setting this up, or have any other questions about 3CX; don't be afraid to reach out to me!
