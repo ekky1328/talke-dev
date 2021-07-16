@@ -153,12 +153,18 @@ const StyledBlogPost = styled.div`
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     margin: 30px 0;
     line-height: 1.4;
-    transform: scale(1.05);
+    transform: scale(1.01);
+    transform: scale(1.02);
+    width: 825px;
+    right: calc(425px - 50%);
   }
 
   @media only screen and (max-width: 600px) {
     & pre {
       overflow: auto;
+      transform: scale(1.01);
+      width: auto;
+      right: auto;
     }
   }
 
@@ -167,7 +173,7 @@ const StyledBlogPost = styled.div`
   }
 
   .grvsc-line-highlighted {
-    background: #ecf6ff;
+    background: #213a21;
     border-left: 7px solid #82c5ff;
     padding-left: calc(24px - 7px);
   }
