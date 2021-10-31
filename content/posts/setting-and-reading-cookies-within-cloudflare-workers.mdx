@@ -1,0 +1,98 @@
+---
+title: How to set and read cookies using Cloudflare Workers
+subtitle: So you want to read, and set cookies 🍪 using Cloudflare Workers? Well, you're in the right place!
+slug: setting-and-reading-cookies-within-cloudflare-workers
+tags: Cloudflare, Workers,
+date: 2021-11-01
+publish: true
+id: 8
+---
+
+I really struggled to find much information about how to tackle this in Cloudflare, so I came up with my own solution.
+
+So if you want to read, and set cookeis using Cloudflare Workers, here is what I did to get it working.
+
+I don't really have the time to explain how this works right now, but here is a code example:
+
+```js
+addEventListener("fetch", event => {
+  event.respondWith(
+    handleRequest(event.request).catch(
+      err => new Response(err.stack, { status: 500 })
+    )
+  )
+})
+
+async function handleRequest(request) {
+  const { pathname } = new URL(request.url)
+
+  if (pathname.startsWith("/__example/getCookie")) {
+    const { searchParams } = new URL(request.url)
+    let key = searchParams.get("key")
+    if (key) {
+      let cookieString = request.headers.get("Cookie")
+      const value = getCookie(cookieString, key)
+      if (value) {
+        const payload = {
+          key,
+          value,
+          message: "Pulled your HTTP Cookie from a cloudflare worker!",
+        }
+        return new Response(JSON.stringify({ payload }, null, 2), {
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+    }
+  }
+
+  if (pathname.startsWith("/__example/setCookie")) {
+    const { searchParams } = new URL(request.url)
+    let key = searchParams.get("key")
+    let value = searchParams.get("value")
+    if (key && value) {
+      let cookieString = request.headers.get("Cookie")
+      const newCookie = `${key}=${value}; path=/__example; secure; HttpOnly; SameSite=Strict`
+      const payload = {
+        key,
+        value: getCookie(cookieString, key),
+        message: `We set your HTTP Cookie using the following values '${key}/${value}.`,
+        getCookieUrl: `https://talke.dev/__example/getCookie?key=${key}`,
+      }
+      const response = new Response(JSON.stringify({ payload }), {
+        headers: { "Content-Type": "application/json" },
+      })
+      response.headers.set("Set-Cookie", newCookie)
+
+      return response
+    }
+  }
+
+  return new Response(
+    JSON.stringify({ message: "What are you doing here?" }, null, 2),
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  )
+}
+
+/**
+ * Takes a cookie string
+ * @param {String} cookieString - The cookie string value: "val=key; val2=key2; val3=key3;"
+ * @param {String} key - The name of the cookie we are reading from the cookie string
+ * @returns {(String|null)} Returns the value of the cookie OR null if nothing was found.
+ */
+function getCookie(cookieString, key) {
+  if (cookieString) {
+    const allCookies = cookieString.split("; ")
+    const targetCookie = allCookies.find(cookie => cookie.includes(key))
+    if (targetCookie) {
+      const [_, value] = targetCookie.split("=")
+      return value
+    }
+  }
+
+  return null
+}
+```
+
+Anyway, I hope this helped you!
