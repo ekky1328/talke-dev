@@ -2,7 +2,7 @@
 title: How to set and read cookies using Cloudflare Workers
 subtitle: So you want to read, and set cookies 🍪 using Cloudflare Workers? Well, you're in the right place!
 slug: setting-and-reading-cookies-within-cloudflare-workers
-tags: Cloudflare, Workers,
+tags: Cloudflare Workers, JavaScript, Proxy
 date: 2021-11-01
 publish: true
 id: 8
@@ -10,9 +10,9 @@ id: 8
 
 I really struggled to find much information about how to tackle this in Cloudflare, so I came up with my own solution.
 
-So if you want to read, and set cookeis using Cloudflare Workers, here is what I did to get it working.
+So if you want to read, and set cookies using Cloudflare Workers, here is what I did to get it working.
 
-I don't really have the time to explain how this works right now, but here is a code example:
+I don't really have the time to explain how this works right now, but here is a code example, and a live worker example at the bottom of this post:
 
 ```js
 addEventListener("fetch", event => {
@@ -95,4 +95,16 @@ function getCookie(cookieString, key) {
 }
 ```
 
-Anyway, I hope this helped you!
+Here is a live Cloudflare Worker example.
+
+**Set Cookie**
+
+- [https://cookie_reader_setter.talke.workers.dev/\_\_example/setCookie?key=test&value=test](https://cookie_reader_setter.talke.workers.dev/__example/setCookie?key=test&value=test)
+
+**Get Cookie**
+
+- [https://cookie_reader_setter.talke.workers.dev/\_\_example/getCookie?key=test](https://cookie_reader_setter.talke.workers.dev/__example/getCookie?key=test)
+
+Make sure you open your Dev Tools and go to 'Application' > 'Cookies' to view the results.
+
+Anyway, I hope this helped you! 🍻
