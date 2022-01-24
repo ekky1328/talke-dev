@@ -1,0 +1,57 @@
+---
+title: Unyoked from data privacy...
+subtitle: Their privacy statement says that they "...will protect your personal information from being dealt with in any way that is inconsistent with applicable privacy laws in Australia". Through my experience, they are not even trying to protect their own data.
+slug: unyoked-from-data-privacy
+tags: Data Privacy, Bad Software, Dataleaks
+date: 2022-01-24
+publish: true
+id: 9
+---
+
+If you know how to press a key combination of `CTRL` + `SHIFT` + `I` in a web browser, you'll be able to access most of unyoked.co business information and **private** customer data... let me show you in a few simple steps...
+
+1. Visit their website...
+2. Press `CTRL` + `SHIFT` + `I`
+3. Click on the `Applications` tab
+4. Click on `Local Storage`
+5. Click on `unyoked.co`
+6. You now have access to leaked business and customer data...
+
+<img
+  src="/finding-user-data-in-local-storage.png"
+  alt="A console example of finding private user data being persisted in local storage."
+/>
+
+> With a few clicks, you can find out where **Tegan** from **Hawthorn** will be travelling to on the **19th May 2022**.
+
+Creepy right? The code developed for `unyoked.co` is **forcefully** storing this data on your computer, and all you need to do is visit their homepage.
+
+I repeat, there was NO hacking, there was NO password stuffing, this required ZERO sql injections... all you need to do is simply **visit** their website, open development debugging tools and you can get access to this information. Another thing to mention is that this data will be accessible on your computer until you either **delete all your browsing history** or you **physically destroy your computer**.
+
+I'm not going to dive into anymore information about how this is actually working, what implications this has for unyoked and their customers, or the number of other security issues this website has because it just hurts.
+
+I just needed this to be out there as I've tried to get in touch with the guys from Unyoked before (see below) to get this fixed... and I'm not seeing any action.
+
+> I was told the following " we've discussed it with our developers ... we're having a further meeting with them to review their assessment and next steps from there.", however, almost twelve months on it has only gotten worse.
+
+The sad part is... I really wanted to use their service, but after accidentally stumbling on this, and seeing how it has been handled... they've lost a customer.
+
+<img
+  src="/email-history.png"
+  alt="Email history showing me trying to get in touch..."
+/>
+<br />
+<br />
+<img
+  src="/reaching-out-via-instagram.jpg"
+  alt="Reaching out via instagram dm's..."
+/>
+
+---
+
+<div className="alert danger">
+  If you are reading this, and you are a representative from{" "}
+  <strong>unyoked.co</strong>, feel free to get in touch. I'd be more than happy
+  to provide all of this information once again{" "}
+  <strong>so it can be fixed</strong> for good.
+</div>

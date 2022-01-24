@@ -254,6 +254,16 @@ const StyledBlogPost = styled.div`
       color: #f70000;
     }
   }
+
+  blockquote {
+    color: #595352;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.846em !important;
+    font-style: italic;
+    line-height: 1.52em;
+  }
 `
 
 export default Posts
