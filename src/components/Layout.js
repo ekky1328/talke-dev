@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import { Helmet } from "react-helmet"
 import { createGlobalStyle } from "styled-components"
 import Footer from "./Footer"
@@ -11,16 +11,19 @@ const Layout = ({
   blog,
   blogMenu = { next: null, previous: null },
 }) => {
+  const [theme, setTheme] = useState()
   const { previous, next } = blogMenu
+
+  useEffect(() => {
+    loadTheme()
+  }, [])
 
   function generateTitle(title) {
     if (title === undefined) {
-      return "Christopher Talke | Coffs Harbour based ICT Professional | talke.dev"
+      return "Christopher Talke | Coffs Harbour based IT Professional, Managed IT Support, Cloud Support, Network Support | talke.dev"
     }
-    return `${title} | Christopher Talke | Coffs Harbour based ICT Professional | talke.dev`
+    return `${title} | Christopher Talke | Coffs Harbour based IT Professional, Managed IT Support, Cloud Support, Network Support | talke.dev`
   }
-
-  console.log(subtitle)
 
   function generateSubtitle(subtitle) {
     if (subtitle === undefined) {
@@ -29,9 +32,20 @@ const Layout = ({
     return subtitle
   }
 
+  function updateTheme(newTheme) {
+    localStorage.setItem("theme", newTheme)
+    console.log(newTheme)
+    setTheme(newTheme)
+  }
+
+  function loadTheme() {
+    const themeFromStorage = localStorage.getItem("theme")
+    setTheme(!!themeFromStorage)
+  }
+
   return (
     <>
-      <GlobalStyle theme="light" blog={blog} />
+      <GlobalStyle theme={theme} blog={blog} />
       <Helmet>
         <meta charSet="utf-8" />
         <title>{generateTitle(title)}</title>
@@ -71,6 +85,9 @@ const Layout = ({
           ""
         )}
       </div>
+      <div className="theme-toggle" onClick={() => updateTheme(!theme)}>
+        {theme ? "🔆" : "🌙"}
+      </div>
       <main className={container ? "container" : ""}>{children}</main>
       <Footer />
     </>
@@ -83,8 +100,10 @@ const GlobalStyle = createGlobalStyle`
 
   :root {
     --text-size: 14px;
-    --main-colour: #000;
-    --secondary-colour: #797979;
+    --main-colour: ${props => (props.theme ? "#000" : "#fff")};
+    --background: ${props => (props.theme ? "#fff" : "#000")};
+    --secondary-colour: ${props => (props.theme ? "#797979" : "#d5d5d5")};
+    --tertiary-colour: ${props => (props.theme ? "#000" : "#fff")};
   }
 
   ::selection {
@@ -92,13 +111,24 @@ const GlobalStyle = createGlobalStyle`
     background: var(--main-colour);
   }
 
+  * {
+    transition: all 250ms;
+  }
+
   body {
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: var(--text-size);
-    background-color: #fff;
+    background-color: var(--background);
     color: var(--secondary-colour);
     margin: 0;
     padding: 0;
+  }
+
+  div.theme-toggle {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 30px;
   }
 
   div.top-bar {
@@ -118,7 +148,7 @@ const GlobalStyle = createGlobalStyle`
       align-items: center;
 
         a {
-          color: white;
+          color: var(--background);
           text-decoration: none;
         }
 

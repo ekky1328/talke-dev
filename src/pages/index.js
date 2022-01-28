@@ -184,7 +184,7 @@ const StyledIndex = styled.div`
       width: 1px;
       height: 400px;
       content: "";
-      background: grey;
+      background: var(--secondary-colour);
       opacity: 0.35;
       position: absolute;
       top: 200px;
@@ -198,7 +198,6 @@ const StyledIndex = styled.div`
       display: block;
       font-size: 24px;
       opacity: 0.35;
-      background: white;
       transform: rotate(-90deg);
       top: 75px;
       left: -87.5px;

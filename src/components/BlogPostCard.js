@@ -34,8 +34,7 @@ const BlogPostCard = ({ node: { frontmatter } }) => {
 
 const StyledBlogPostCard = styled.div`
   position: relative;
-  transition: all 500ms;
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--tertiary-colour);
   font-weight: 400;
   display: block;
   border: 1px solid rgba(0, 0, 0, 0);
