@@ -11,12 +11,8 @@ const Layout = ({
   blog,
   blogMenu = { next: null, previous: null },
 }) => {
-  const [theme, setTheme] = useState(true)
+  const [theme] = useState(true)
   const { previous, next } = blogMenu
-
-  useEffect(() => {
-    loadTheme()
-  }, [])
 
   function generateTitle(title) {
     if (title === undefined) {
