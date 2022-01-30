@@ -1,0 +1,61 @@
+---
+title: Setup Firefly III Really Quickly
+subtitle: Are you a personal finance nerd? Do you like Docker? Here is a really quick way to get Firefly III up and running!
+slug: setup-firefly-iii-really-quickly
+tags: Docker, Firefly, Personal Finance
+date: 2022-01-31
+publish: true
+id: 10
+---
+
+We've been really trying to get ontop of our personal finances recently, and rather than buying something like You Need A Budget (YNAB) or Pocketsmith, we've opted to get Firefly III up and running since we have the ability to self-host.
+
+So if you are also a personal finance nerd, and you know how to self-host using docker, here is a quick script to get your own Firefly III instance up and running!
+
+```sh
+#!/usr/bin/env bash
+
+# Network
+NETWORK_NAME="FIREFLY_NET"
+docker network create $NETWORK_NAME
+
+# Firefly Database Script
+SQL_CONTAINER_NAME="FIREFLY_DB"
+
+docker stop "$SQL_CONTAINER_NAME" &> /dev/null
+docker kill "$SQL_CONTAINER_NAME" &> /dev/null
+docker rm "$SQL_CONTAINER_NAME" &> /dev/null
+
+docker run -d \
+  -v ~/firefly/web:/var/lib/mysql \
+  -e MYSQL_DATABASE=firefly \
+  -e MYSQL_USER=firefly \
+  -e MYSQL_PASSWORD=firefly \
+  -e MYSQL_RANDOM_ROOT_PASSWORD=<random_password> \
+  --restart unless-stopped \
+  --network $NETWORK_NAME \
+  --name=$SQL_CONTAINER_NAME \
+  mysql:5.7
+
+# Firefly Web Script
+WEB_CONTAINER_NAME="FIREFLY_WEB"
+
+docker stop "$WEB_CONTAINER_NAME" &> /dev/null
+docker kill "$WEB_CONTAINER_NAME" &> /dev/null
+docker rm "$WEB_CONTAINER_NAME" &> /dev/null
+
+docker run -d \
+  -v ~/firefly/web:/var/www/html/storage/upload \
+  -p 8075:8080 \
+  -e APP_KEY=<random_password> \
+  -e DB_HOST=$SQL_CONTAINER_NAME \
+  -e DB_PORT=3306 \
+  -e DB_CONNECTION=mysql \
+  -e DB_DATABASE=firefly \
+  -e DB_USERNAME=firefly \
+  -e DB_PASSWORD=firefly \
+  --restart unless-stopped \
+  --network $NETWORK_NAME \
+  --name=$WEB_CONTAINER_NAME \
+  fireflyiii/core:latest
+```
