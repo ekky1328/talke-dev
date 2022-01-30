@@ -11,7 +11,7 @@ const Layout = ({
   blog,
   blogMenu = { next: null, previous: null },
 }) => {
-  const [theme, setTheme] = useState()
+  const [theme, setTheme] = useState(true)
   const { previous, next } = blogMenu
 
   useEffect(() => {
@@ -30,17 +30,6 @@ const Layout = ({
       return "Christopher Talke is a Coffs Harbour based IT Professional, and this is his blog that will typically cover anything to do with web dev, windows/linux server things or janky networking stuff!"
     }
     return subtitle
-  }
-
-  function updateTheme(newTheme) {
-    localStorage.setItem("theme", newTheme)
-    console.log(newTheme)
-    setTheme(newTheme)
-  }
-
-  function loadTheme() {
-    const themeFromStorage = localStorage.getItem("theme")
-    setTheme(!!themeFromStorage)
   }
 
   return (
@@ -84,9 +73,6 @@ const Layout = ({
         ) : (
           ""
         )}
-      </div>
-      <div className="theme-toggle" onClick={() => updateTheme(!theme)}>
-        {theme ? "🔆" : "🌙"}
       </div>
       <main className={container ? "container" : ""}>{children}</main>
       <Footer />
