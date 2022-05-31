@@ -1,0 +1,66 @@
+---
+title: Starting 2022 facing homelessness and building a bot to avoid that.
+subtitle: Everyone knows finding a rental today is difficult, and competitive. It's grueling filling out applications, and it's time consuming keeping track of properties you've applied for. To help make this process easier, I decided to create a bot.
+slug: at-the-start-of-2022-we-were-facing-homelessness
+tags: Housing, Homelessness, Bots, Automation
+date: 2022-05-31
+publish: true
+id: 11
+---
+
+We struggled to find a place to live as the Australian rental market unbelievably competitive and being much more expensive than previous years.
+
+To put this into perspective, I have a healthy full-time (above average) income, we have a spotless rental history, and the finances to back us up. Regardless of this, we were still unable to find a place to live as easily as we'd hoped.
+
+Over a period of three (3) months, we applied for a total of fourty-three (43) properties within a price range of $450 - $700. The only time we were able to recieve 'approval' for a property was when we had a personal connection with the property manager and/or landlord.
+
+![Rental Hunger Games - Source: ABC](/rental-hunger-games.png)
+
+One of the biggest problems we found was a lack of communication between the applicants and the real estates. We had no way of knowing if the property had been leased or not. You would apply for a property, and it would just be radio silence.
+
+> To be honest, I don't blame the real estates or the property managers... the massive growth of applicants in such a short amount of time just didn't allow for them to scale their communications accordingly.
+
+In saying that, I went ahead and solved this communcation issue for myself the only way I knew how to. I spent hours automating the searching & checking process with some reverse engineering, and a Telegram bot.
+
+## 🕵️ Researching The Problem & Preparing
+
+One of the first things I did was layout the basics of searching for a property and to start I had to find the most popular website in Australia to do this, which was [realestate.com.au](https://www.realestate.com.au/).
+
+Generally you would go to this website, enter your prospective area (i.e. suburb, city, etc.), and hit search. This would then list all the properties in that area that are currently available. From there you would navigate between the properties and select the one you were after.
+
+If you wanted to check that a property was still available, you would need to go through that same process and search for it OR bookmark the link to the property and check it periodically (time consuming & gruelling).
+
+Now when it comes to automation, you would normally just scrape the HTML of the page, parse it and send it off to a database. But this would not be the case for realestate.com.au, as they have some pretty strict rules about what information you can access through 'scraping'. In addition to this, they also have bot protection, so you can't just scrape the HTML of the page without facing a captcha challange.
+
+After a while of fiddling around in the network tab of Edge (Chromium), I found that the website actually called a seperate GraphQL API to feed that page client-side rather than constantly server side rendering the contents of the page, and this GraphQL API endpoint was through a service they use called '[Lexa CMS](https://www.lexascms.com/)'.
+
+With some further testing, I was able to call this GraphQL endpoint locally with CURL, and write the response to a file.
+
+Now all I needed was a way to consume the data, and after hearing a bunch about Telegram bots, I decided to use a [Telegram Bot](https://core.telegram.org/bots) to setup the notification system. In addition to that I needed a place to persist data, and for that I decided to utilise [Supabase](https://supabase.io).
+
+So at this point I had everything I needed:
+
+- An Undocumented API Endpoint to hit (within legal bounds)
+- Confirmation I could write the data to a file
+- A way to consume the data via a Telegram Bot
+- A way to persist and keep track of data using Supabase
+
+## 🤖 Voila! @FindMeARentalBot is born
+
+Of course it wasn't as simple as saying 'Voila!', and it certainly wasn't a structured approach. However, I managed to get the bot to work, and it was a success. I was able to automate the process of searching for a property by automatically notifying our family whenever a new property was listed in real-time.
+
+This gave us a great advantage over the 'competition', as we were able to find a place to live without having to do any of the tedious work of constantly monitoring websites for new listings.
+
+It also helped us avoid the heartbreak of finding out a property we had applied for was no longer available after not hearing anything for weeks at a time.
+
+> If you want to get a full look at the code, you can find it here: [https://github.com/christopher-talke/find-me-a-rental](https://github.com/christopher-talke/find-me-a-rental)
+
+Beware the code isn't A-Grade, and I'm not responsible for any damage that may occur to your system by just looking at it. 😆
+
+At the end of the day, I was able to find a place to live with this tool assisting us through the process. Which was the only goal I had in mind at the end of the day.
+
+I am planning to release a guide to the bot in the near future here: [https://talke.dev/find-me-a-rental-bot](https://talke.dev/find-me-a-rental-bot).
+
+> "I was able to find a place to live with this tool... Which was the only goal I had in mind"
+
+If you have any questions or comments, feel free to reach out!
