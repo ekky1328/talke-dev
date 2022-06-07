@@ -1,0 +1,23 @@
+---
+title: Fast lines of code count command.
+subtitle: Ever wanted to quickly check how many lines of code have been written in your current working project? Here is a quick command I've been using!
+slug: fast-lines-of-code-count-command
+tags: Git, Command Line, Linux
+date: 2022-06-07
+publish: true
+id: 12
+---
+
+Here is a really quick command I've been using to count the lines of code in my current project.
+
+```sh
+git ls-files | grep -Ev '<dirs_files_to_ignore>' | xargs wc -l | grep total | sed 's/[^0-9]*//g' | awk '{ print "\n" $1 " lines of code in this project"}'
+```
+
+Please note that `<dirs_files_to_ignore>` needs to have pipe seperated values for any directories or files you want to ignore from the count, for example:
+
+```sh
+git ls-files | grep -Ev 'node_modules|dist|.png|.jpg.|.jpeg|package.json|package-lock.json' | xargs wc -l | grep total | sed 's/[^0-9]*//g' | awk '{ print "\n" $1 " lines of code in this project"}'
+```
+
+Hope this helps!
