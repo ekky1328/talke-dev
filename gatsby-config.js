@@ -17,20 +17,19 @@ module.exports = {
       resolve: "gatsby-plugin-mdx",
       options: {
         root: __dirname,
-        gatsbyRemarkPlugins: [
-          {
-            resolve: `gatsby-remark-vscode`,
-            options: {
-              theme: "Dark (Visual Studio)",
-              inlineCode: {
-                marker: "•",
-                className: "inline-code",
-              },
-              logLevel: "error",
-              injectStyles: true,
-            },
-          },
-        ],
+        mdxOptions: {
+          remarkPlugins: [
+            [require('gatsby-remark-vscode').remarkPlugin, {
+                theme: `Dark (Visual Studio)`,
+                inlineCode: {
+                  marker: "•",
+                  className: "inline-code",
+                },
+                logLevel: "error",
+                injectStyles: true,
+            }],
+          ],
+        }
       },
     },
     {

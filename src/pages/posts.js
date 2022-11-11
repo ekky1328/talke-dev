@@ -8,8 +8,10 @@ import Layout from "../components/Layout"
 import Tags from "../components/Tags"
 import Github from "../components/Github"
 
-const Posts = props => {
-  const { mdx, previous, next } = props.data
+export default function Posts({data, children}) {
+  const { mdx, previous, next } = data
+
+  console.log(children)
 
   return (
     <Layout
@@ -26,9 +28,9 @@ const Posts = props => {
         </p>
         <hr />
         <article>
-          <MDXProvider>
-            <MDXRenderer>{mdx.body}</MDXRenderer>
-          </MDXProvider>
+          {/* <MDXProvider> */}
+           {children}
+          {/* </MDXProvider> */}
         </article>
         <hr />
         <p id="blog_meta_footer">
@@ -62,20 +64,17 @@ export const pageQuery = graphql`
     mdx(id: { eq: $id }) {
       frontmatter {
         date(formatString: "YYYY-MM-DD")
-        id
         slug
         subtitle
         title
         tags
       }
-      body
     }
 
     previous: mdx(id: { eq: $prev }) {
       frontmatter {
         slug
         title
-        publish
       }
     }
 
@@ -83,7 +82,6 @@ export const pageQuery = graphql`
       frontmatter {
         slug
         title
-        publish
       }
     }
   }
@@ -204,6 +202,37 @@ const StyledBlogPost = styled.div`
     }
   }
 
+  .external-article {
+    border: 1px solid #797979;
+    border-left: 5px solid #797979;
+    padding: 8px 16px;
+    margin: 32px 0;
+    padding-top: 0;
+    transform: scale(1.05);
+
+    a, a h2 {
+      margin: 0;
+      padding: 0;
+    }
+    p {
+      text-decoration: none;
+      margin: 0;
+      margin-bottom: 0;
+      margin-top: -8px;
+    }
+    span {
+      position: relative;
+      top: -8px;
+      font-size: 0.75em;
+      opacity: 0.75;
+    }
+  }
+
+  .external-article:hover {
+    transition: all 200ms;
+    transform: scale(1.075);
+  }
+
   div.github-edit {
     display: flex;
     justify-content: center;
@@ -233,7 +262,7 @@ const StyledBlogPost = styled.div`
     margin: 30px 0;
 
     p {
-      margin-bottom: 0;
+      margin: 0;
     }
 
     &.info {
@@ -265,5 +294,3 @@ const StyledBlogPost = styled.div`
     line-height: 1.52em;
   }
 `
-
-export default Posts

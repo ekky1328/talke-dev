@@ -6,7 +6,8 @@ import Layout from "../components/Layout"
 import BlogPostCard from "../components/BlogPostCard"
 
 const Index = ({ data }) => {
-  const posts = data.allMdx.edges
+  const posts = data.allMdx.nodes
+
   return (
     <Layout>
       <StyledIndex>
@@ -82,25 +83,21 @@ const Index = ({ data }) => {
 }
 
 export const query = graphql`
-  {
-    allMdx(
-      sort: { order: DESC, fields: frontmatter___date }
-      filter: { frontmatter: { publish: { eq: true } } }
-    ) {
-      edges {
-        node {
-          frontmatter {
-            date(formatString: "YYYY-MM-DD")
-            slug
-            subtitle
-            title
-            tags
-          }
-          timeToRead
-        }
+ {
+  allMdx(sort: {frontmatter: {date: DESC}}) {
+    nodes {
+      body
+      frontmatter {
+        date(formatString: "YYYY-MM-DD", fromNow: true)
+        slug
+        subtitle
+        tags
+        title
       }
+      id
     }
   }
+}
 `
 
 const StyledIndex = styled.div`

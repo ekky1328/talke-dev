@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 import Tags from "../components/Tags"
 
-const BlogPostCard = ({ node: { frontmatter } }) => {
+const BlogPostCard = ({ frontmatter }) => {
   return (
     <>
       <StyledBlogPostCard>
