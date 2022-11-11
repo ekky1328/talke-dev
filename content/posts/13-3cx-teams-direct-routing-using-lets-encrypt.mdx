@@ -1,0 +1,151 @@
+---
+title: "Using a free Lets Encrypt SSL for your 3CX Teams Direct Routing deployment"
+subtitle: "You've probably looked at the 'Microsoft Trusted Root Certificate Program' list and noticed that 'Lets Encrypt' wasn't there, guess what? You can still use them for your 3CX Teams Direct Routing deployment."
+slug: "using-lets-encrypt-ssl-for-3cx-teams-direct-routing"
+tags: "3CX, Microsoft Teams, Telephony"
+date: 2022-11-11
+---
+
+
+## Prerequisites
+
+If you're reading this, hopefully you will have spent the time reviewing Microsofts (M$) documentation around setting up Teams Direct Routing. If you have not you should probably give that a read first, you can find a link to this below (I've specfically linked to the SSL/TLS stuff this post is relevent too incase you want to see this first).
+
+<div class="external-article">
+    <a href="https://learn.microsoft.com/en-us/microsoftteams/direct-routing-plan#public-trusted-certificate-for-the-sbc">
+        <h2>Microsoft Teams - Planning Direct Routing</h2>
+    </a>
+    <span>https://learn.microsoft.com/en-us/microsoftteams/direct-routing-plan#public-trusted-certificate-for-the-sbc</span>
+    <p>Learn how Microsoft Direct Routing lets you connect a supported customer-provided Session Border Controller (SBC) to Phone System.</p>
+</div>
+
+... In addition to this, you will also have a deployed 3CX Instance with your Office 365 Integration connected already. If you have not done this, well... please go follow those steps first (see below).
+
+<div class="external-article">
+    <a href="https://www.3cx.com/docs/manual/microsoft-365/">
+        <h2>3CX - Microsoft 365 Integration</h2>
+    </a>
+    <span>https://www.3cx.com/docs/manual/microsoft-365/</span>
+    <p>Setup Microsoft integration to sync users, enable SSO and contact/calendar sync depending on Microsoft subscription and 3CX Edition.</p>
+</div>
+
+... and lastly you should be following the steps provided by the folks over at 3CX for setting up Teams Direct Routing, and using this post on the side to accompany you as you walk through the steps (see below).
+
+<div class="external-article">
+    <a href="https://www.3cx.com/docs/microsoft-teams-business-voice/#h.xl0g5kt2ly3o">
+        <h2>3CX - Configuring Microsoft Teams Business Voice</h2>
+    </a>
+    <span>https://www.3cx.com/docs/microsoft-teams-business-voice/</span>
+    <p>Configure your MS teams business voice with 3CX. Call via 3CX SIP Trunks and benefit from a full-featured PBX with contact center features.</p>
+</div>
+
+Okay, now that we are on the same page, lets get on with the rest of this.
+
+## Generating the SSL Certificate 
+
+To make this as easy as possible, we're going to be using a tool created by `Robert` over at `punchsalad.com` (see below link). 
+
+Generally I'd steer away from using this tool if you know what you are doing via `CLI` or even using a tool like `Certify The Web`, and it is likely that if you are reading this you could probably figure this out, however, as I said earlier this tool makes it as easy as possible so we'll stick with Robo's tool for the moment.
+
+<div class="external-article">
+    <a href="https://punchsalad.com/ssl-certificate-generator/">
+        <h2>PunchSalad - Free SSL Certificate Generator</h2>
+    </a>
+    <span>https://punchsalad.com/ssl-certificate-generator/</span>
+    <p>Create a Free Let's Encrypt SSL Certificate in a few minutes (including Wildcard SSL).</p>
+</div>
+
+So lets get started with the SSL Certificate generation...
+
+    1) Navigate to the SSL Certificate Generator (linked above)
+
+        - Enter the domain: `teams.xyz.com.au`
+        - Enter the email address: `example@xyz.com`
+        - Select the `DNS Verification` option
+        - Check the `Lets Encrypt Agreement` checkbox
+
+    2) Click Submit
+
+        - At this point you’ll be given a DNS TXT Record to add to your DNS provider, head over to whoever manages your DNS and add the DNS TXT Record as necessary, and wait approx. 5 - 10 minutes before proceeding.
+
+    3) Once ready, click `Verify` and wait...
+    4) You’ll now be shown two text boxes, the first box is the `Certificate + CA` Bundle and the other is the `Private Key`.
+
+        - Save the first box as a text file somewhere secure and name it `cert.pem`, ensuring you are using the .pem file extension.
+        - Save the second box as `private.pem`, ensuring you are using the .pem file extension.
+
+    5) Great you have now generated the required certificates!
+
+
+## Uploading the SSL Certificate
+Now you should be all good to go with uploading the SSL Certificate to your 3CX Instance.
+
+    - Navigate to your `3CX Administration` portal
+    - Click on `Settings`
+    - Click on `Microsoft 365`
+    - Click on `Teams Direct Routing (Alpha)`
+    - Go to `Step 1` and enter the domain we used to generate the certificate earlier `teams.xyz.com.au`.
+    - Go to `Step 2` and upload the two files we created earlier.
+    - Go to `Step 3` & `Step 4`, and generate the two Powershell Scripts you'll need to run.
+    - Click `Save` once you've uploaded the new files.
+
+Once these have been uploaded, make sure to keep note of the `Expiration Date` which is shown directly underneath the `Certificate` input field.
+
+At this point, if you're going to keep this instance running for a long period of time, set a reminder in whatever tool you prefer (i.e. Outlook/Google Calendar). This way you won't find yourself troubleshooting and wasting time in a few months when your generated certificate expires!
+
+## Running the Powershell Scripts
+
+Please refer to the 3CX Guide linked earlier for setting up Microsoft Teams Business Voice with 3CX (Direct Routing), otherwise, please see below extract from the relevent section:
+
+- *Review the script for any invalid users that might be commented out. Adjust accordingly and repeat the above steps.*
+- *Start Windows Powershell as Administrator and ensure that execution policy is set to Bypass by entering this command:*
+    `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+- *Go to the folder where the script “map_users.ps1” is saved and run.*
+
+At this point you should be all good to move onto testing, and making sure the SSL Certificate worked.
+
+## Testing Teams Direct Routing
+
+Before you start testing if the SSL Certificate has worked, you should probably wait a moment to ensure the two systems. As stated by 3CX *"... the integratin might take up to 24 hours to be fully functional."*, however, if you don't see any explicit SSL/TLS Errors on either end (i.e. in 3CX or in Microsoft Teams) then you should be all good.
+
+Once you've waited sufficent time, try make some outbound calls and also try make some calls inbound to your phone system. 
+
+Hopefully everything worked as expected!
+
+<div className="alert danger">
+  <strong>Remember</strong> this is an <strong>alpha</strong> staged integration, and there may be issues/features missing. Please turn your attention towards 3CX and their team. I'm not going to help you if something breaks, unless you're willing to pay for my time!
+</div>
+
+## Resource Recap
+
+<div class="external-article">
+    <a href="https://learn.microsoft.com/en-us/microsoftteams/direct-routing-plan#public-trusted-certificate-for-the-sbc">
+        <h2>Microsoft Teams - Planning Direct Routing</h2>
+    </a>
+    <span>https://learn.microsoft.com/en-us/microsoftteams/direct-routing-plan#public-trusted-certificate-for-the-sbc</span>
+    <p>Learn how Microsoft Direct Routing lets you connect a supported customer-provided Session Border Controller (SBC) to Phone System.</p>
+</div>
+
+<div class="external-article">
+    <a href="https://www.3cx.com/docs/manual/microsoft-365/">
+        <h2>3CX - Microsoft 365 Integration</h2>
+    </a>
+    <span>https://www.3cx.com/docs/manual/microsoft-365/</span>
+    <p>Setup Microsoft integration to sync users, enable SSO and contact/calendar sync depending on Microsoft subscription and 3CX Edition.</p>
+</div>
+
+<div class="external-article">
+    <a href="https://www.3cx.com/docs/microsoft-teams-business-voice/#h.xl0g5kt2ly3o">
+        <h2>3CX - Configuring Microsoft Teams Business Voice</h2>
+    </a>
+    <span>https://www.3cx.com/docs/microsoft-teams-business-voice/</span>
+    <p>Configure your MS teams business voice with 3CX. Call via 3CX SIP Trunks and benefit from a full-featured PBX with contact center features.</p>
+</div>
+
+<div class="external-article">
+    <a href="https://punchsalad.com/ssl-certificate-generator/">
+        <h2>PunchSalad - Free SSL Certificate Generator</h2>
+    </a>
+    <span>https://punchsalad.com/ssl-certificate-generator/</span>
+    <p>Create a Free Let's Encrypt SSL Certificate in a few minutes (including Wildcard SSL).</p>
+</div>
