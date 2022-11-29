@@ -25,15 +25,13 @@
     "gatsby-plugin-react-helmet": "^6.0.0",
     "gatsby-plugin-styled-components": "^6.0.0",
     "gatsby-plugin-twitter": "^5.0.0",
-    "gatsby-prismjs-dracula": "^0.1.15",
     "gatsby-remark-vscode": "^3.3.1",
     "gatsby-source-filesystem": "^5.0.0",
     "gatsby-source-graphql": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "styled-components": "^5.3.6",
-    "theme-dracula": "github:dracula/visual-studio-code"
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "eslint": "^8.27.0",
